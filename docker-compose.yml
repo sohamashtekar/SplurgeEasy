@@ -6,19 +6,18 @@ services:
     image: splurge-easy-back-end
     # Container name
     container_name: SEBackEnd
-    # command
-    command: bash -c "/src/start.sh"
     # Build the image from the Dockerfile
     build:
       context: ./back-end/
       dockerfile: Dockerfile
-    # Map port 3000 on the host to port 3000 on the container
-    ports:
-      - "8000:8000"
     # Mount the current directory as a volume to the container
     volumes:
       - ./back-end:/src
-    # restart: never
+    # command
+    command: bash start.sh
+    # Map port 3000 on the host to port 3000 on the container
+    ports:
+      - "8000:8000"
 
   FrontEnd:
     # Image name
@@ -29,11 +28,11 @@ services:
     build: 
       context: ./front-end/
       dockerfile: Dockerfile
-    # Map port 3000 on the host to port 3000 on the container
-    ports:
-      - "3000:3000"
     # Mount the current directory as a volume to the container
     volumes:
       - ./front-end:/src
-    # Restart the container automatically if it exits
-    # restart: never
+    # command
+    command: bash start.sh
+    # Map port 3000 on the host to port 3000 on the container
+    ports:
+      - "3000:3000"

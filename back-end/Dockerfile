@@ -10,15 +10,15 @@ RUN \
     apt-get -q -y install nginx
 
 # Set work directory
-WORKDIR /code
+WORKDIR /src
 
 # Install dependencies
-COPY requirements.txt /code/
+COPY requirements.txt /src/
 
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 # Copy project
-COPY . /code/
+COPY . /src/
 
 EXPOSE 8000
