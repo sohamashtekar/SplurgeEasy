@@ -1,19 +1,18 @@
 FROM node:21-alpine3.17
 
-# Set the working directory to /app
-WORKDIR /app
+RUN apk update && apk add bash
 
-# Copy the package.json and package-lock.json files to /app
-COPY package*.json /app/
+# Set the working directory to /src
+WORKDIR /src
+
+# Copy the package.json and package-lock.json files to /src
+COPY package*.json /src/
 
 # Install the dependencies
 RUN npm install --legacy-peer-deps --force
 
-# Copy the rest of the code to /app
-COPY . /app/
+# Copy the rest of the code to /src
+COPY . /src/
 
 # Expose port 3000
 EXPOSE 3000
-
-# Start the app
-CMD ["npm", "start"]
