@@ -1,2 +1,2 @@
 #!/bin/bash
-cd /src/ && npm start
+npm install --legacy-peer-deps --force && npm start

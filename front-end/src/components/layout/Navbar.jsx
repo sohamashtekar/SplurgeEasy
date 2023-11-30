@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
     AppBar,
     Box,
@@ -12,10 +12,13 @@ import {
 } from '@mui/material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { useNavigate } from 'react-router-dom';
+import AuthContext from '../context/AuthProvider';
 
 function Navbar() {
     const navigate = useNavigate();
-    const [auth, setAuth] = useState(false);
+
+    const { auth } = useContext(AuthContext);
+
     const [anchorEl, setAnchorEl] = useState(null);
 
     const handleMenu = (event) => {
@@ -79,7 +82,7 @@ function Navbar() {
                         </div>
                     )}
                     {!auth && (
-                        <div style={{ width: '30%' }}>
+                        <div style={{ width: '50%', overflow: 'hidden' }}>
                             <Grid
                                 container
                                 spacing={1}
