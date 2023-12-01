@@ -55,17 +55,25 @@ MIDDLEWARE = [
 ]
 
 REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+        'rest_framework.permissions.IsAuthenticated'
     ]
 }
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # React development server
+]
+
+# Enable CSRF (Cross-Site Request Forgery) protection for session-based authentication.
+CSRF_USE_SESSIONS = True
+
+# Set CORS_ALLOW_CREDENTIALS to True to allow credentials (e.g., cookies) to be sent with cross-origin requests.
+CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'SEBackEnd.urls'
 

@@ -1,14 +1,14 @@
 import { Grid, Paper, Typography, TextField, Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import axios from '../../api/axios';
-import React, { useState, useEffect, useRef, useContext } from 'react';
-import AuthContext from '../context/AuthProvider';
 import { tokenAPI } from '../../api/api';
+import { useNavigate } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import axios from '../../api/axios';
+import useAuth from '../../hooks/useAuth';
 
 function LogIn() {
     const navigate = useNavigate();
 
-    const { setAuth } = useContext(AuthContext);
+    const { setAuth } = useAuth();
     const emailRef = useRef();
     const errRef = useRef();
 
@@ -27,9 +27,16 @@ function LogIn() {
     const initiateLogIn = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(tokenAPI, { email: email, password: password });
+            const response = await axios.post(
+                tokenAPI,
+                { email: email, password: password },
+                {
+                    headers: { 'Content-Type': 'application/json' },
+                    withCredentials: true,
+                }
+            );
 
-            const accessToken = response?.data?.accessToken;
+            const accessToken = response?.data?.access;
             const roles = response?.data?.roles;
 
             setAuth({ email, password, roles, accessToken });

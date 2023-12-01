@@ -12,12 +12,12 @@ import {
 } from '@mui/material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { useNavigate } from 'react-router-dom';
-import AuthContext from '../context/AuthProvider';
+import useAuth from '../../hooks/useAuth';
 
 function Navbar() {
     const navigate = useNavigate();
 
-    const { auth } = useContext(AuthContext);
+    const { auth } = useAuth();
 
     const [anchorEl, setAnchorEl] = useState(null);
 

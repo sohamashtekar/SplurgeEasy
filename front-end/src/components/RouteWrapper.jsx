@@ -1,11 +1,13 @@
-import React from 'react';
+import { Grid } from '@mui/material';
 import { Routes, Route } from 'react-router-dom';
+import Dashboard from './dashboard/Dashboard';
 import LandingPage from './landing-page/LandingPage';
 import LogIn from './authentication/LogIn';
-import SignUp from './authentication/SignUp';
+import Missing from './authentication/Missing';
 import Navbar from './layout/Navbar';
-import Dashboard from './dashboard/Dashboard';
-import { Grid } from '@mui/material';
+import React from 'react';
+import RequireAuth from './authentication/RequireAuth';
+import SignUp from './authentication/SignUp';
 
 function ElementWrapper({ children }) {
     return (
@@ -56,11 +58,23 @@ function RouteWrapper() {
                 }
             />
 
+            {/* Protected routes start here */}
+            <Route element={<RequireAuth allowedRoles={[]} />}>
+                <Route
+                    path='/dashboard'
+                    element={
+                        <ElementWrapper>
+                            <Dashboard />
+                        </ElementWrapper>
+                    }
+                />
+            </Route>
+
             <Route
-                path='/dashboard'
+                path='*'
                 element={
                     <ElementWrapper>
-                        <Dashboard />
+                        <Missing />
                     </ElementWrapper>
                 }
             />

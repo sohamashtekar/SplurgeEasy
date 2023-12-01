@@ -1,10 +1,6 @@
-import React, { useContext } from 'react';
 import { Grid } from '@mui/material';
-import AuthContext from '../context/AuthProvider';
 
 function Dashboard() {
-    const { auth } = useContext(AuthContext);
-
     return (
         <Grid
             container
