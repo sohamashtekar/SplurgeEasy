@@ -1,4 +1,3 @@
-import React, { useState, useContext } from 'react';
 import {
     AppBar,
     Box,
@@ -10,14 +9,18 @@ import {
     Button,
     Grid,
 } from '@mui/material';
-import AccountCircle from '@mui/icons-material/AccountCircle';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import AccountCircle from '@mui/icons-material/AccountCircle';
 import useAuth from '../../hooks/useAuth';
+import { logoutAPI } from '../../api/api';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 function Navbar() {
     const navigate = useNavigate();
+    const axiosPrivate = useAxiosPrivate();
 
-    const { auth } = useAuth();
+    const { auth, setAuth } = useAuth();
 
     const [anchorEl, setAnchorEl] = useState(null);
 
@@ -37,6 +40,15 @@ function Navbar() {
         navigate('/signup');
     };
 
+    const handleLogOut = async () => {
+        try {
+            const response = await axiosPrivate.get(logoutAPI, {
+                withCredentials: true,
+            });
+            response.status === 200 && setAuth(null);
+        } catch (err) {}
+    };
+
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position='static'>
@@ -49,8 +61,9 @@ function Navbar() {
                     >
                         SplurgeEasy
                     </Typography>
-                    {auth && (
+                    {auth?.accessToken && (
                         <div>
+                            <Typography variant='p'>User Name</Typography>
                             <IconButton
                                 size='large'
                                 aria-label='account of current user'
@@ -65,7 +78,7 @@ function Navbar() {
                                 id='menu-appbar'
                                 anchorEl={anchorEl}
                                 anchorOrigin={{
-                                    vertical: 'top',
+                                    vertical: 'bottom',
                                     horizontal: 'right',
                                 }}
                                 keepMounted
@@ -76,12 +89,11 @@ function Navbar() {
                                 open={Boolean(anchorEl)}
                                 onClose={handleClose}
                             >
-                                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                                <MenuItem onClick={handleClose}>My account</MenuItem>
+                                <MenuItem onClick={handleLogOut}>Log Out</MenuItem>
                             </Menu>
                         </div>
                     )}
-                    {!auth && (
+                    {!auth?.accessToken && (
                         <div style={{ width: '50%', overflow: 'hidden' }}>
                             <Grid
                                 container

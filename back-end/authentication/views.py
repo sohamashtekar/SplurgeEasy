@@ -4,12 +4,12 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework_simplejwt.tokens import RefreshToken, OutstandingToken
 
 from .serializers import UserRegistrationSerializer
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     def post(self, request, *args, **kwargs):
-        print(dir(request))
         response = super().post(request, *args, **kwargs)
 
         # Customize the cookie settings for the access token
@@ -19,7 +19,6 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             secure=False,   # Set to True in production
             httponly=True,
             max_age=3600,  # Set the desired max age (in seconds)
-            samesite='Lax'
         )
 
         # Delete refresh token from response data as we are sending it as a cookie. 
@@ -58,3 +57,25 @@ class UserRegistrationAPIView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class LogoutView(APIView):
+    def get(self, request):
+        try:
+            refresh_token = request.COOKIES.get('refresh_token')
+
+            if not refresh_token:
+                return Response({'error': 'Refresh token not found in the cookie'}, status=400)
+
+            token = RefreshToken(refresh_token)
+
+            # Blacklist the refresh token
+            token.blacklist()
+
+            # Blacklist associated access tokens
+            OutstandingToken.objects.filter(user=token.payload['user_id']).delete()
+
+            return Response(status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={"error": "Invalid token"})

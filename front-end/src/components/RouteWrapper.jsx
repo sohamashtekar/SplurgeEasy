@@ -8,6 +8,7 @@ import Navbar from './layout/Navbar';
 import React from 'react';
 import RequireAuth from './authentication/RequireAuth';
 import SignUp from './authentication/SignUp';
+import PersistLogin from './authentication/PersistLogin';
 
 function ElementWrapper({ children }) {
     return (
@@ -59,15 +60,17 @@ function RouteWrapper() {
             />
 
             {/* Protected routes start here */}
-            <Route element={<RequireAuth allowedRoles={[]} />}>
-                <Route
-                    path='/dashboard'
-                    element={
-                        <ElementWrapper>
-                            <Dashboard />
-                        </ElementWrapper>
-                    }
-                />
+            <Route element={<PersistLogin />}>
+                <Route element={<RequireAuth allowedRoles={[]} />}>
+                    <Route
+                        path='/dashboard'
+                        element={
+                            <ElementWrapper>
+                                <Dashboard />
+                            </ElementWrapper>
+                        }
+                    />
+                </Route>
             </Route>
 
             <Route
