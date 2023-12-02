@@ -13,14 +13,13 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import useAuth from '../../hooks/useAuth';
-import { logoutAPI } from '../../api/api';
-import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import useLogout from '../../hooks/useLogout';
 
 function Navbar() {
     const navigate = useNavigate();
-    const axiosPrivate = useAxiosPrivate();
+    const logout = useLogout();
 
-    const { auth, setAuth } = useAuth();
+    const { auth } = useAuth();
 
     const [anchorEl, setAnchorEl] = useState(null);
 
@@ -41,12 +40,8 @@ function Navbar() {
     };
 
     const handleLogOut = async () => {
-        try {
-            const response = await axiosPrivate.get(logoutAPI, {
-                withCredentials: true,
-            });
-            response.status === 200 && setAuth(null);
-        } catch (err) {}
+        await logout();
+        navigate('/');
     };
 
     return (

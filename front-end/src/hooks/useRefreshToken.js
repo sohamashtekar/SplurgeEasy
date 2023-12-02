@@ -19,7 +19,7 @@ const useRefreshToken = () => {
             });
             return response.data.accessToken;
         } catch (err) {
-            console.log(err);
+            return false;
         }
     };
     return refresh;

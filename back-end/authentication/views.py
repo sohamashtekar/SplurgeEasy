@@ -5,6 +5,7 @@ from rest_framework.permissions import AllowAny
 
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.tokens import RefreshToken, OutstandingToken
+from rest_framework_simplejwt.exceptions import TokenError
 
 from .serializers import UserRegistrationSerializer
 
@@ -37,16 +38,17 @@ class CustomTokenRefreshView(TokenRefreshView):
         # Perform the refresh token logic
         serializer = self.get_serializer(data={'refresh': refresh_token})
 
-        if serializer.is_valid():
-            refresh = serializer.validated_data
-            access_token = serializer.validated_data.get('access')
+        try:
+            if serializer.is_valid():
+                access_token = serializer.validated_data.get('access')
 
-            # Customize the response if needed
-            response_data = {'access': access_token}
+                # Customize the response if needed
+                response_data = {'access': access_token}
 
-            return Response(response_data)
+                return Response(response_data)
+        except TokenError:
+            return Response(status=403)
 
-        return Response(serializer.errors, status=400)
 
 class UserRegistrationAPIView(APIView):
     permission_classes = [AllowAny]
@@ -75,7 +77,11 @@ class LogoutView(APIView):
             # Blacklist associated access tokens
             OutstandingToken.objects.filter(user=token.payload['user_id']).delete()
 
-            return Response(status=status.HTTP_200_OK)
+            # Clear cookie from the response
+            res = Response(status=status.HTTP_200_OK)
+            res.delete_cookie(key='refresh_token')
+      
+            return res
         except Exception as e:
             print(e)
             return Response(status=status.HTTP_400_BAD_REQUEST, data={"error": "Invalid token"})

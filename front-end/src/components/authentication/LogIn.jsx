@@ -1,4 +1,12 @@
-import { Grid, Paper, Typography, TextField, Button } from '@mui/material';
+import {
+    Grid,
+    Paper,
+    Typography,
+    TextField,
+    Button,
+    FormControlLabel,
+    Checkbox,
+} from '@mui/material';
 import { tokenAPI } from '../../api/api';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
@@ -8,7 +16,7 @@ import useAuth from '../../hooks/useAuth';
 function LogIn() {
     const navigate = useNavigate();
 
-    const { setAuth } = useAuth();
+    const { auth, setAuth, persist, setPersist } = useAuth();
     const emailRef = useRef();
     const errRef = useRef();
 
@@ -17,12 +25,24 @@ function LogIn() {
     const [errMsg, setErrMsg] = useState('');
 
     useEffect(() => {
+        auth?.accessToken && navigate('/dashboard');
+    }, [auth]);
+
+    useEffect(() => {
         emailRef.current.focus();
     }, []);
 
     useEffect(() => {
         setErrMsg('');
     }, [email, password]);
+
+    useEffect(() => {
+        localStorage.setItem('persist', persist);
+    }, [persist]);
+
+    const togglePersist = () => {
+        setPersist((prev) => !prev);
+    };
 
     const initiateLogIn = async (e) => {
         e.preventDefault();
@@ -102,6 +122,18 @@ function LogIn() {
                                         type='password'
                                         fullWidth
                                         onChange={(e) => setPassword(e.target.value)}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <FormControlLabel
+                                        label='Trust this device?'
+                                        control={
+                                            <Checkbox
+                                                checked={persist}
+                                                onChange={togglePersist}
+                                                color='primary'
+                                            />
+                                        }
                                     />
                                 </Grid>
                                 <Grid item xs={12}>

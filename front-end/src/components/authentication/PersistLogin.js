@@ -7,7 +7,7 @@ import LoadingBackdrop from '../generic/LoadingBackdrop';
 const PersistLogin = () => {
     const [isLoading, setIsLoading] = useState(true);
     const refresh = useRefreshToken();
-    const { auth } = useAuth();
+    const { auth, persist } = useAuth();
 
     useEffect(() => {
         const verifyRefreshToken = async () => {
@@ -20,10 +20,12 @@ const PersistLogin = () => {
             }
         };
 
-        !auth?.accessToken ? verifyRefreshToken() : setIsLoading(false);
+        !auth?.accessToken && persist ? verifyRefreshToken() : setIsLoading(false);
     }, []);
 
-    return <>{isLoading ? <LoadingBackdrop open={isLoading} /> : <Outlet />}</>;
+    return (
+        <>{!persist ? <Outlet /> : isLoading ? <LoadingBackdrop open={isLoading} /> : <Outlet />}</>
+    );
 };
 
 export default PersistLogin;
