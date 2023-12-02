@@ -1,9 +1,16 @@
-import React from 'react';
+import { useEffect } from 'react';
 import { Grid, Typography, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
 
 function LandingPage() {
     const navigate = useNavigate();
+
+    const { auth } = useAuth();
+
+    useEffect(() => {
+        auth?.accessToken && navigate('/dashboard');
+    }, [auth]);
 
     const handleSignUp = () => {
         navigate('/signup');

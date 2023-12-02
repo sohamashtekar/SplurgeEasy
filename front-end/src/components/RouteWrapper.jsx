@@ -32,23 +32,25 @@ function ElementWrapper({ children }) {
 function RouteWrapper() {
     return (
         <Routes>
-            <Route
-                path='/'
-                element={
-                    <ElementWrapper>
-                        <LandingPage />
-                    </ElementWrapper>
-                }
-            />
+            <Route element={<PersistLogin />}>
+                <Route
+                    path='/'
+                    element={
+                        <ElementWrapper>
+                            <LandingPage />
+                        </ElementWrapper>
+                    }
+                />
 
-            <Route
-                path='/login'
-                element={
-                    <ElementWrapper>
-                        <LogIn />
-                    </ElementWrapper>
-                }
-            />
+                <Route
+                    path='/login'
+                    element={
+                        <ElementWrapper>
+                            <LogIn />
+                        </ElementWrapper>
+                    }
+                />
+            </Route>
 
             <Route
                 path='/signup'
