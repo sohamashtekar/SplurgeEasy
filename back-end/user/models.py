@@ -22,13 +22,14 @@ class CustomUserManager(BaseUserManager):
 class CustomUser(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(unique=True)
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
+    first_name = models.CharField(max_length=30, blank=True, null=True)
+    last_name = models.CharField(max_length=30, blank=True, null=True)
     phone_no = models.CharField(max_length=10, blank=True, null=True)
     phone_ext = models.CharField(max_length=3, blank=True, null=True)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name']  # Add any additional fields that are required during user creation
+
+    REQUIRED_FIELDS = []
 
     objects = CustomUserManager()
 
