@@ -17,7 +17,7 @@ function ElementWrapper({ children }) {
             <Grid
                 container
                 style={{
-                    padding: '20',
+                    padding: '2%',
                     height: '91dvh',
                 }}
             >
