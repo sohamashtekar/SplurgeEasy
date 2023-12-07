@@ -7,6 +7,8 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.tokens import RefreshToken, OutstandingToken
 from rest_framework_simplejwt.exceptions import TokenError
 
+from django.core.exceptions import ObjectDoesNotExist
+
 from user.models import CustomUser
 from .serializers import UserRegistrationSerializer
 
@@ -58,8 +60,9 @@ class CustomTokenRefreshView(TokenRefreshView):
 
                 return Response(response_data)
         except TokenError:
-            return Response(status=403)
-
+            return Response(status=status.HTTP_403_FORBIDDEN)
+        except ObjectDoesNotExist:
+            return Response(status=status.HTTP_403_FORBIDDEN)
 
 class UserRegistrationAPIView(APIView):
     permission_classes = [AllowAny]
