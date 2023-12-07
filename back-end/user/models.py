@@ -1,5 +1,7 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
+from django.db.models import Q
+
 import uuid
 
 class CustomUserManager(BaseUserManager):
@@ -19,13 +21,21 @@ class CustomUserManager(BaseUserManager):
 
         return self.create_user(email, password, **extra_fields)
 
+
 class CustomUser(AbstractUser):
+    REGISTRATION_STATUS_CHOICES = [
+        ('C', 'Complete'),
+        ('P', 'Pending'),
+    ]
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=30, blank=True, null=True)
     last_name = models.CharField(max_length=30, blank=True, null=True)
     phone_no = models.CharField(max_length=10, blank=True, null=True)
     phone_ext = models.CharField(max_length=3, blank=True, null=True)
+    country_code = models.CharField(max_length=5, blank=True, null=True)
+    registration_status = models.CharField(max_length=1, choices=REGISTRATION_STATUS_CHOICES)
 
     USERNAME_FIELD = 'email'
 
@@ -43,3 +53,38 @@ class ExpenseGroup(models.Model):
     members = models.ManyToManyField('user.CustomUser', related_name='expense_group')
     created_by = models.ForeignKey('user.CustomUser', on_delete=models.PROTECT)
     created_on = models.DateTimeField(auto_now_add=True)
+
+class Friend(models.Model):
+    user1 = models.ForeignKey('user.CustomUser', related_name='user_1', on_delete=models.PROTECT)
+    user2 = models.ForeignKey('user.CustomUser', related_name='user_2', on_delete=models.PROTECT)
+    became_friends_on = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ['user1', 'user2']
+
+    @classmethod
+    def are_friends(cls, email1, email2):
+        user1 = CustomUser.objects.get(email=email1)
+        user2 = CustomUser.objects.get(email=email2)
+
+        friends = cls.objects.filter(
+            Q(user1=user1, user2=user2) | 
+            Q(user1=user2, user2=user1)
+        )
+
+        return friends.exists()
+
+class FriendRequest(models.Model):
+    STATUS_CHOICES = [
+        ('PENDING', 'Pending'),
+        ('ACCEPTED', 'Accepted'),
+        ('DECLINED', 'Declined'),
+    ]
+
+    from_user = models.ForeignKey('user.CustomUser', related_name='friend_req_created_by', on_delete=models.PROTECT)
+    to_email = models.EmailField()
+    status = models.CharField(max_length=8, choices=STATUS_CHOICES, default='PENDING')
+    created_on = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ['from_user', 'to_email']

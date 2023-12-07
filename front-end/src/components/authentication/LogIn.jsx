@@ -58,8 +58,9 @@ function LogIn() {
 
             const accessToken = response?.data?.access;
             const roles = response?.data?.roles;
+            const name = response?.data?.name;
 
-            setAuth({ email, password, roles, accessToken });
+            setAuth({ email, roles, accessToken, name });
             setEmail('');
             setPassword('');
             setErrMsg('');
@@ -83,7 +84,6 @@ function LogIn() {
             <Grid
                 container
                 style={{
-                    backgroundColor: 'darkgray',
                     minHeight: '100%',
                 }}
                 justifyContent={'center'}

@@ -58,7 +58,7 @@ function Navbar() {
                     </Typography>
                     {auth?.accessToken && (
                         <div>
-                            <Typography variant='p'>User Name</Typography>
+                            <Typography variant='p'>{auth.name || ''}</Typography>
                             <IconButton
                                 size='large'
                                 aria-label='account of current user'

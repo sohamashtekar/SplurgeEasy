@@ -10,7 +10,7 @@ class SplitMethod(models.Model):
         ('S', 'Shares'),
         ('A', 'Adjustment')
     ]
-    method = models.CharField(max_length=20, choices=SPLIT_METHOD_CHOICES)
+    method = models.CharField(max_length=1, choices=SPLIT_METHOD_CHOICES)
 
 class SplitDetail(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -19,6 +19,8 @@ class SplitDetail(models.Model):
     value = models.DecimalField(max_digits=8, decimal_places=2)
     calculated_amount = models.DecimalField(max_digits=8, decimal_places=2)
     is_settled = models.BooleanField(default=False)
+    settled_by = models.ForeignKey('user.CustomUser', on_delete=models.PROTECT, related_name='expense_settled_by', null=True)
+    settled_on = models.DateTimeField(null=True, blank=True)
 
 class Expense(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

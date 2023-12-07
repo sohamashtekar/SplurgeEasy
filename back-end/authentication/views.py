@@ -7,12 +7,19 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.tokens import RefreshToken, OutstandingToken
 from rest_framework_simplejwt.exceptions import TokenError
 
+from django.core.exceptions import ObjectDoesNotExist
+
+from user.models import CustomUser
 from .serializers import UserRegistrationSerializer
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
 
+        user = CustomUser.objects.get(username=request.data['email'])
+        response.data['name'] = F'{user.first_name} {user.last_name}'
+        response.data['email'] = F'{user.email}'
+       
         # Customize the cookie settings for the access token
         response.set_cookie(
             key='refresh_token',
@@ -40,15 +47,22 @@ class CustomTokenRefreshView(TokenRefreshView):
 
         try:
             if serializer.is_valid():
+                token = RefreshToken(refresh_token)
+                user = CustomUser.objects.get(id=token.payload['user_id'])
                 access_token = serializer.validated_data.get('access')
 
                 # Customize the response if needed
-                response_data = {'access': access_token}
+                response_data = {
+                    'access': access_token,
+                    'name': F'{user.first_name} {user.last_name}',
+                    'email': F'{user.email}'
+                }
 
                 return Response(response_data)
         except TokenError:
-            return Response(status=403)
-
+            return Response(status=status.HTTP_403_FORBIDDEN)
+        except ObjectDoesNotExist:
+            return Response(status=status.HTTP_403_FORBIDDEN)
 
 class UserRegistrationAPIView(APIView):
     permission_classes = [AllowAny]
