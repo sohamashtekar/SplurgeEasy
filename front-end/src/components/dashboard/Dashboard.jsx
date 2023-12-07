@@ -1,6 +1,6 @@
 import { Grid } from '@mui/material';
 import ExpenseSection from '../expense/ExpenseSection';
-import GroupSection from '../group/GroupSection';
+import GroupsAndFriendsSection from '../friends/GroupsAndFriendsSection';
 
 function Dashboard() {
     return (
@@ -9,7 +9,7 @@ function Dashboard() {
                 <ExpenseSection />
             </Grid>
             <Grid item xs={12} md={6} style={{ border: '1px dotted lightgrey' }}>
-                <GroupSection />
+                <GroupsAndFriendsSection />
             </Grid>
         </Grid>
     );

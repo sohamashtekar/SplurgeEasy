@@ -1,7 +1,7 @@
-import { Grid, Typography, Fab } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-// import NewExpenseDialog from './NewExpenseDialog';
+import { Grid, Typography, Fab, Button } from '@mui/material';
 import { useState } from 'react';
+// import NewExpenseDialog from './NewExpenseDialog';
+import ReceiptIcon from '@mui/icons-material/Receipt';
 
 const ExpenseSection = () => {
     const [openExpenseDialog, setOpenExpenseDialog] = useState(false);
@@ -17,7 +17,7 @@ const ExpenseSection = () => {
             <Grid container style={{ padding: 2, height: '100%' }}>
                 <Grid item xs={12} style={{ minHeight: '80%' }}>
                     <Grid container direction={'row'}>
-                        <Grid item xs={6} style={{ padding: 1 }}>
+                        <Grid item xs={5} style={{ padding: 1 }}>
                             <Grid
                                 item
                                 xs={12}
@@ -37,7 +37,7 @@ const ExpenseSection = () => {
                             </Grid>
                             <Grid item xs={12}></Grid>
                         </Grid>
-                        <Grid item xs={6} style={{ padding: 1 }}>
+                        <Grid item xs={5} style={{ padding: 1 }}>
                             <Grid
                                 item
                                 xs={12}
@@ -57,35 +57,27 @@ const ExpenseSection = () => {
                             </Grid>
                             <Grid item xs={12}></Grid>
                         </Grid>
+                        <Grid item xs={2} style={{ padding: 1 }}>
+                            <Grid
+                                item
+                                xs={12}
+                                style={{
+                                    textAlign: 'center',
+                                    backgroundColor: '#e0e0e0',
+                                    paddingBottom: 1,
+                                }}
+                            >
+                                <Button
+                                    sx={{ color: 'black' }}
+                                    size='small'
+                                    startIcon={<ReceiptIcon />}
+                                    onClick={addExpense}
+                                >
+                                    Add
+                                </Button>
+                            </Grid>
+                        </Grid>
                     </Grid>
-                </Grid>
-                <Grid
-                    item
-                    xs={12}
-                    style={{
-                        minHeight: 50,
-                        maxHeight: '20%',
-                        display: 'flex',
-                        justifyContent: 'end',
-                        alignItems: 'end',
-                    }}
-                >
-                    <Fab
-                        color='primary'
-                        variant='extended'
-                        size='small'
-                        onClick={addExpense}
-                        style={{
-                            marginRight: 12,
-                            marginBottom: 12,
-                            width: 115,
-                            height: 30,
-                            fontSize: 10,
-                        }}
-                    >
-                        <AddIcon fontSize='small' />
-                        Add expense
-                    </Fab>
                 </Grid>
             </Grid>
         </>
