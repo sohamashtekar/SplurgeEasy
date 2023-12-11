@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.db.models import Q
+from django.core.exceptions import ObjectDoesNotExist
 
 import uuid
 
@@ -64,15 +65,37 @@ class Friend(models.Model):
 
     @classmethod
     def are_friends(cls, email1, email2):
-        user1 = CustomUser.objects.get(email=email1)
-        user2 = CustomUser.objects.get(email=email2)
+        try:
+            user1 = CustomUser.objects.get(email=email1)
+            user2 = CustomUser.objects.get(email=email2)
 
+            friends = cls.objects.filter(
+                Q(user1=user1, user2=user2) | 
+                Q(user1=user2, user2=user1)
+            )
+
+            return friends.exists()
+
+        except ObjectDoesNotExist:
+            return False
+    
+    @classmethod
+    def get_friends(cls, user):
+        # Get all Friend objects where the given user is either user1 or user2
         friends = cls.objects.filter(
-            Q(user1=user1, user2=user2) | 
-            Q(user1=user2, user2=user1)
+            Q(user1=user) | 
+            Q(user2=user)
         )
 
-        return friends.exists()
+        # Get the friends of the user
+        friend_users = []
+        for friend in friends:
+            if friend.user1 == user:
+                friend_users.append(friend.user2)
+            else:
+                friend_users.append(friend.user1)
+
+        return friend_users
 
 class FriendRequest(models.Model):
     STATUS_CHOICES = [

@@ -8,12 +8,12 @@ class SplitMethod(models.Model):
         ('P', 'Percentage'),
         ('U', 'Unqually'),
         ('S', 'Shares'),
-        ('A', 'Adjustment')
     ]
-    method = models.CharField(max_length=1, choices=SPLIT_METHOD_CHOICES)
+    id = models.CharField(primary_key=True, max_length=1, choices=SPLIT_METHOD_CHOICES, unique=True)
 
 class SplitDetail(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    expense = models.ForeignKey('expense.Expense', on_delete=models.PROTECT, related_name='expense_details')
     user = models.ForeignKey('user.CustomUser', on_delete=models.PROTECT, related_name='user_split_detail')
     split_method = models.ForeignKey(SplitMethod, on_delete=models.CASCADE)
     value = models.DecimalField(max_digits=8, decimal_places=2)
@@ -27,7 +27,6 @@ class Expense(models.Model):
     total_amount = models.DecimalField(max_digits=8, decimal_places=2)
     description = models.CharField(max_length=200)
     split_method = models.ForeignKey('expense.SplitMethod', on_delete=models.PROTECT)
-    split_detail = models.ManyToManyField('expense.SplitDetail', related_name='split_detail') 
     note = models.CharField(max_length=200, blank=True, null=True)
     group = models.ForeignKey('user.ExpenseGroup', null=True, on_delete=models.PROTECT)
     created_by = models.ForeignKey('user.CustomUser', on_delete=models.PROTECT, related_name='expense_created_by')
