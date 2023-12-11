@@ -1,8 +1,11 @@
+import traceback
+
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import CustomUser, FriendRequest, Friend
+from .serializers import FriendSerializer, UserInfoSerializer
 
 from django.db.models import F
 from django.core.exceptions import ObjectDoesNotExist
@@ -64,7 +67,7 @@ class FriendRequestView(APIView):
             return Response(data=resposne_data, status=status.HTTP_201_CREATED)
 
         except Exception as e:
-            print(e)
+            traceback.print_exc()
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
 
@@ -90,3 +93,24 @@ class FriendRequestView(APIView):
             print(e)
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             
+
+class UserDataView(APIView):
+    def get(self, request):
+        try:
+            response_data = {}
+
+            # Get user info
+            user_info_serializer = UserInfoSerializer(request.user)
+            user_info_data = user_info_serializer.data
+            response_data['user_info'] = user_info_data
+
+            # Get users friends
+            friends = Friend.get_friends(request.user)
+            friends_serializer = FriendSerializer(friends, many=True)
+            friends_data = friends_serializer.data
+            response_data['friends'] = friends_data
+
+            return Response(data=response_data, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            print(e)
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
