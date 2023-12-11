@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { Alert, Snackbar, Typography } from '@mui/material';
 
 function CustomAlert(props) {

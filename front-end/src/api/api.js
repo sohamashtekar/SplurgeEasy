@@ -1,7 +1,17 @@
+const friendRequestAPI = '/friend-request/';
+const logoutAPI = '/logout/';
+const saveExpenseAPI = '/save-expense/';
+const signUpAPI = '/signup/';
 const tokenAPI = '/token/';
 const tokenRefreshAPI = '/token/refresh/';
-const signUpAPI = '/signup/';
-const logoutAPI = '/logout/';
-const friendRequestAPI = '/friend-request/';
+const userDataAPI = '/user-data/';
 
-export { tokenAPI, tokenRefreshAPI, signUpAPI, logoutAPI, friendRequestAPI };
+export {
+    friendRequestAPI,
+    logoutAPI,
+    saveExpenseAPI,
+    signUpAPI,
+    tokenAPI,
+    tokenRefreshAPI,
+    userDataAPI,
+};

@@ -1,6 +1,6 @@
-import { Grid, Typography, Fab, Button } from '@mui/material';
+import { Grid, Typography, Button } from '@mui/material';
 import { useState } from 'react';
-// import NewExpenseDialog from './NewExpenseDialog';
+import NewExpenseDialog from './NewExpenseDialog';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 
 const ExpenseSection = () => {
@@ -12,7 +12,9 @@ const ExpenseSection = () => {
 
     return (
         <>
-            {/* <NewExpenseDialog open={openExpenseDialog} setOpen={setOpenExpenseDialog} /> */}
+            {openExpenseDialog && (
+                <NewExpenseDialog open={openExpenseDialog} setOpen={setOpenExpenseDialog} />
+            )}
 
             <Grid container style={{ padding: 2, height: '100%' }}>
                 <Grid item xs={12} style={{ minHeight: '80%' }}>

@@ -1,9 +1,7 @@
 import { axiosPrivate } from '../../api/axios';
 import { friendRequestAPI } from '../../api/api';
-import { Grid, IconButton, Typography, Button, Divider } from '@mui/material';
+import { Grid, Typography, Button, Divider } from '@mui/material';
 import { useState, useEffect } from 'react';
-import CheckIcon from '@mui/icons-material/Check';
-import CloseIcon from '@mui/icons-material/Close';
 import LoadingBackdrop from '../generic/LoadingBackdrop';
 
 const RequestRow = ({ friendRequest, respondToRequest }) => {

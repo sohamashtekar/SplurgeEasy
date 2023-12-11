@@ -9,7 +9,7 @@ const GroupsAndFriendsSection = () => {
     const [addFriend, setAddFriend] = useState(false);
     return (
         <>
-            <AddFriendDialog open={addFriend} setOpen={setAddFriend} />
+            {addFriend && <AddFriendDialog open={addFriend} setOpen={setAddFriend} />}
             <Grid container style={{ padding: 3, height: '100%' }}>
                 <Grid item xs={12}>
                     <Grid container justifyContent='center' style={{ backgroundColor: '#e0e0e0' }}>
