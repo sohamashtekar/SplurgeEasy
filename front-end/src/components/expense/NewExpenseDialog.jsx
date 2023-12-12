@@ -66,7 +66,7 @@ function ExpenseOwnerMenu(props) {
 
 function NewExpenseDialog(props) {
     const { open, setOpen } = props;
-    const { userData } = useUserData();
+    const { userData, userDataQuery } = useUserData();
 
     const userInfo = userData?.user_info;
     const friends = userData?.friends;
@@ -181,7 +181,8 @@ function NewExpenseDialog(props) {
                 paid_by: paidBy.id,
             };
 
-            const response = await axiosPrivate.post(saveExpenseAPI, requestData);
+            await axiosPrivate.post(saveExpenseAPI, requestData);
+            userDataQuery.refetch();
             setOpen(false);
             alert('Expense saved!');
         } catch (err) {

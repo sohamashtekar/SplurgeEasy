@@ -1,23 +1,11 @@
-import {
-    IconButton,
-    DialogContent,
-    Typography,
-    Grid,
-    Paper,
-    Tabs,
-    TextField,
-    InputAdornment,
-    Divider,
-} from '@mui/material';
-import { useState, useEffect } from 'react';
+// prettier-ignore
+import { equallyCalculatedValue, unequallyCalculatedValues, } from './functions/SplitValueCalculations';
+// prettier-ignore
+import { IconButton, DialogContent, Typography, Grid, Paper, Tabs, TextField, InputAdornment, Divider, } from '@mui/material';
 import { StyledTab, StyledTabPanel } from './styles/SplitDetailsTabStyles';
-import EqualizerIcon from '@mui/icons-material/Equalizer';
+import { useState, useEffect } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
-import {
-    equallyCalculatedValue,
-    unequallyCalculatedValues,
-} from './functions/SplitValueCalculations';
-import debounce from 'lodash/debounce';
+import EqualizerIcon from '@mui/icons-material/Equalizer';
 
 const SplitDetailsDialog = (props) => {
     const { open, setOpen, splitDetail, setSplitDetail, paidBy, totalAmount, splitBetweenUsers } =
@@ -204,7 +192,7 @@ const SplitDetailsDialog = (props) => {
                                     {splitDetail?.splitValues?.map((infoDict) => (
                                         <Grid container key={infoDict.user.email} sx={{ mt: 1 }}>
                                             <Grid item xs={7}>
-                                                {infoDict.user.display_name} 
+                                                {infoDict.user.display_name}
                                             </Grid>
                                             <Grid item xs={2} sx={{ textAlign: 'start' }}>
                                                 {`$ ${getUsersAmt(infoDict.user)}`}

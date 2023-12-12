@@ -4,6 +4,7 @@ import AddFriendDialog from './AddFriendDialog';
 import FriendRequests from './FriendRequests';
 import GroupsIcon from '@mui/icons-material/Groups';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import FriendsList from './FriendsList';
 
 const GroupsAndFriendsSection = () => {
     const [addFriend, setAddFriend] = useState(false);
@@ -34,8 +35,11 @@ const GroupsAndFriendsSection = () => {
                             </Button>
                         </Grid>
                     </Grid>
-                    <Grid item xs={12} sx={{ padding: '8px' }}>
+                    <Grid item xs={12} sx={{ pl: '8px', pr: '8px' }}>
                         <FriendRequests />
+                    </Grid>
+                    <Grid item xs={12} sx={{ pl: '8px', pr: '8px' }}>
+                        <FriendsList />
                     </Grid>
                 </Grid>
                 <Grid item xs={12}>

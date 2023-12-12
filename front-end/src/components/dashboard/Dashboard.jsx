@@ -1,7 +1,7 @@
 import { Grid } from '@mui/material';
+import { UserDataProvider } from '../../context/UserDataProvider';
 import ExpenseSection from '../expense/ExpenseSection';
 import GroupsAndFriendsSection from '../friends/GroupsAndFriendsSection';
-import { UserDataProvider } from '../../context/UserDataProvider';
 
 function Dashboard() {
     return (

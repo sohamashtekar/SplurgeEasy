@@ -1,5 +1,5 @@
 import { styled } from '@mui/material/styles';
-import { Tooltip, Tab, Box, Tabs } from '@mui/material';
+import { Tooltip, Tab, Box } from '@mui/material';
 
 const TabWithToolTip = (props) => {
     const { tooltipText } = props;
@@ -40,4 +40,3 @@ export function StyledTabPanel(props) {
         </div>
     );
 }
-

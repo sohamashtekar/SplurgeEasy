@@ -1,6 +1,6 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
-from django.db.models import Q
+from django.db.models import Q, F
 from django.core.exceptions import ObjectDoesNotExist
 
 import uuid
@@ -111,3 +111,15 @@ class FriendRequest(models.Model):
 
     class Meta:
         unique_together = ['from_user', 'to_email']
+
+    @classmethod
+    def get_friend_requests(cls, user_email):
+        # Create friend request object , is_rejected=False
+        friend_requests = FriendRequest.objects.filter(to_email=user_email, status='PENDING').values(
+            requestID=F('id'),
+            firstName=F('from_user__first_name'),
+            lastName=F('from_user__last_name'),
+            email=F('from_user__email')
+        )
+
+        return friend_requests
