@@ -4,6 +4,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from expense.models import SplitDetail
+
 from .models import CustomUser, FriendRequest, Friend
 from .serializers import FriendSerializer, UserInfoSerializer
 
@@ -104,13 +106,26 @@ class UserDataView(APIView):
             user_info_data = user_info_serializer.data
             response_data['user_info'] = user_info_data
 
-            # Get users friends
+            # Get user's friend requests
+            user_email = request.user.email
+            friend_requests = FriendRequest.get_friend_requests(user_email)
+            response_data['friend_requests'] = friend_requests
+
+            # Get user's friends
             friends = Friend.get_friends(request.user)
-            friends_serializer = FriendSerializer(friends, many=True)
+            friends_serializer = FriendSerializer(friends, many=True, request_user=request.user)
             friends_data = friends_serializer.data
             response_data['friends'] = friends_data
+
+            # Get user's balance sheet
+            # SplitDetail.get_users_balance_sheet(request.user)
+
+            # amount_owes_serializer = TotalOwedSerializer(amount_owes, many=True)
+            # amount_owes_data = amount_owes_serializer.data
+            # response_data['amount_owes'] = amount_owes_data
 
             return Response(data=response_data, status=status.HTTP_201_CREATED)
         except Exception as e:
             print(e)
+            traceback.print_exc()
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)

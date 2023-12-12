@@ -1,7 +1,7 @@
 # serializers.py
 from django.db import transaction
 from rest_framework import serializers
-from .models import SplitMethod, SplitDetail, Expense
+from expense.models import SplitMethod, SplitDetail, Expense
 
 
 class SplitMethodSerializer(serializers.ModelSerializer):

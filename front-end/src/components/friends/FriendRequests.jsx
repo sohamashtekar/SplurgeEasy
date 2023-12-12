@@ -1,8 +1,9 @@
 import { axiosPrivate } from '../../api/axios';
 import { friendRequestAPI } from '../../api/api';
 import { Grid, Typography, Button, Divider } from '@mui/material';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import LoadingBackdrop from '../generic/LoadingBackdrop';
+import useUserData from '../../hooks/useUserData';
 
 const RequestRow = ({ friendRequest, respondToRequest }) => {
     const { requestID, firstName, lastName, email } = friendRequest;
@@ -47,38 +48,26 @@ const RequestRow = ({ friendRequest, respondToRequest }) => {
 };
 
 const FriendRequests = () => {
-    const [friendRequests, setFriendRequests] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [showFR, setShowFR] = useState(false);
 
-    const getFriendRequests = async () => {
-        setLoading(true);
-        try {
-            const response = await axiosPrivate.get(friendRequestAPI);
-            setFriendRequests(response.data?.friend_requests);
-        } catch (err) {
-            alert('Error occoured, contact our support team!');
-        } finally {
-            setLoading(false);
-        }
-    };
+    const { userData, userDataQuery } = useUserData();
+    const friendRequests = userData?.friend_requests || [];
 
     const respondToRequest = async (requestId, isAccepted) => {
         try {
-            const response = await axiosPrivate.patch(friendRequestAPI, {
+            setLoading(true);
+            await axiosPrivate.patch(friendRequestAPI, {
                 requestId: requestId,
                 isAccepted: isAccepted,
             });
-            console.log(response);
+            userDataQuery.refetch();
         } catch (err) {
             alert('Error occoured, contact our support team!');
         } finally {
             setLoading(false);
         }
     };
-
-    useEffect(() => {
-        getFriendRequests();
-    }, []);
 
     return (
         <>
@@ -87,24 +76,53 @@ const FriendRequests = () => {
             ) : (
                 <>
                     {friendRequests.length > 0 && (
-                        <div>
+                        <div style={{ paddingTop: '8px' }}>
                             <Grid
                                 item
                                 xs={12}
                                 sx={{ textAlign: 'center', backgroundColor: '#ffcc80' }}
                             >
-                                You have new friend requests!
+                                <Grid container>
+                                    <Grid item xs={8} sx={{ textAlign: 'end' }}>
+                                        You have new friend requests!
+                                    </Grid>
+                                    <Grid
+                                        item
+                                        xs={4}
+                                        sx={{ display: 'flex', justifyContent: 'end' }}
+                                    >
+                                        <Button
+                                            size='small'
+                                            sx={{
+                                                m: '3px',
+                                                mr: '8px',
+                                                p: 0,
+                                                color: 'black',
+                                                backgroundColor: '#ffa31a',
+                                                fontSize: '12px',
+                                            }}
+                                            onClick={() => {
+                                                setShowFR(!showFR);
+                                            }}
+                                        >
+                                            Show
+                                        </Button>
+                                    </Grid>
+                                </Grid>
                                 <Divider />
                             </Grid>
-                            <Grid item xs={12} sx={{ mt: 1 }}>
-                                {friendRequests.map((request) => (
-                                    <RequestRow
-                                        key={request.requestID}
-                                        friendRequest={request}
-                                        respondToRequest={respondToRequest}
-                                    />
-                                ))}
-                            </Grid>
+                            {showFR && (
+                                <Grid item xs={12} sx={{ mt: 1 }}>
+                                    {friendRequests.map((request) => (
+                                        <RequestRow
+                                            key={request.requestID}
+                                            friendRequest={request}
+                                            respondToRequest={respondToRequest}
+                                        />
+                                    ))}
+                                </Grid>
+                            )}
+                            <Divider sx={{ mt: '8px' }} />
                         </div>
                     )}
                 </>
