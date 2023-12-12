@@ -13,6 +13,7 @@ services:
     # Mount the current directory as a volume to the container
     volumes:
       - ./back-end:/src
+      - frontend_build:/build
     # command
     command: bash start.sh
     # Map port 3000 on the host to port 3000 on the container
@@ -31,8 +32,12 @@ services:
     # Mount the current directory as a volume to the container
     volumes:
       - ./front-end:/src
+      - frontend_build:/build
     # command
     command: bash start.sh
     # Map port 3000 on the host to port 3000 on the container
     ports:
       - "3000:3000"
+
+volumes:
+  frontend_build:

@@ -1,2 +1,2 @@
 #!/bin/bash
-npm install --legacy-peer-deps --force && npm start
+npm install --legacy-peer-deps --force && npm run build
