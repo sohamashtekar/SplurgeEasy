@@ -16,9 +16,9 @@ services:
       - frontend_build:/build
     # command
     command: bash start.sh
-    # Map port 3000 on the host to port 3000 on the container
+    # Map port 80 on the host to port 8000 on the container
     ports:
-      - "8000:8000"
+      - "80:8000"
 
   FrontEnd:
     # Image name
@@ -35,7 +35,6 @@ services:
       - frontend_build:/build
     # command
     command: bash start.sh
-    # Map port 3000 on the host to port 3000 on the container
     ports:
       - "3000:3000"
 
