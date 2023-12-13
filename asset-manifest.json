@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/splurge_easy_deploy_gh/static/css/main.f855e6bc.css",
+    "main.js": "/splurge_easy_deploy_gh/static/js/main.86e8dfb1.js",
+    "index.html": "/splurge_easy_deploy_gh/index.html",
+    "main.f855e6bc.css.map": "/splurge_easy_deploy_gh/static/css/main.f855e6bc.css.map",
+    "main.86e8dfb1.js.map": "/splurge_easy_deploy_gh/static/js/main.86e8dfb1.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f855e6bc.css",
+    "static/js/main.86e8dfb1.js"
+  ]
+}
