@@ -89,7 +89,7 @@ function Navbar() {
                         </div>
                     )}
                     {!auth?.accessToken && (
-                        <div style={{ width: '50%', overflow: 'hidden' }}>
+                        <div>
                             <Grid
                                 container
                                 spacing={1}

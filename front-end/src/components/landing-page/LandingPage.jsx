@@ -27,9 +27,9 @@ function LandingPage() {
                     minHeight: '100%',
                 }}
             >
-                <Grid item xs={8}>
+                <Grid item xs={11} lg={8}>
                     <Grid container>
-                        <Grid item xs={6}>
+                        <Grid item xs={12} lg={6}>
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
                                     <Typography variant='h3' style={{ fontWeight: 600 }}>
@@ -38,9 +38,11 @@ function LandingPage() {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Typography variant='p' style={{ fontWeight: 600 }}>
-                                        Manage your money with ease. Split expenses, track spending,
-                                        and get tips to save. SplurgeEasy is the ultimate app for
-                                        smart and social finance.
+                                        Manage your money with ease.
+                                        <br /> Split expenses, track spending, and get tips to save.
+                                        <br />
+                                        SplurgeEasy is the ultimate app for smart and social
+                                        finance.
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={12}>
@@ -57,7 +59,7 @@ function LandingPage() {
                                 </Grid>
                             </Grid>
                         </Grid>
-                        <Grid item xs={6}></Grid>
+                        <Grid item xs={12} lg={6}></Grid>
                     </Grid>
                 </Grid>
             </Grid>
