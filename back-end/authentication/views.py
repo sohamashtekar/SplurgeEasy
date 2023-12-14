@@ -24,8 +24,9 @@ class CustomTokenObtainPairView(TokenObtainPairView):
         response.set_cookie(
             key='refresh_token',
             value=response.data['refresh'],
-            secure=False,   # Set to True in production
+            secure=True,
             httponly=True,
+            samesite='None',
             max_age=3600,  # Set the desired max age (in seconds)
         )
 
