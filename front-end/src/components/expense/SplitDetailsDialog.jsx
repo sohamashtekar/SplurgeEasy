@@ -96,110 +96,115 @@ const SplitDetailsDialog = (props) => {
     const calculatedTotalText = calculateTotalTxtValue();
 
     return (
-        <Paper elevation={2} style={{ maxWidth: '450px' }}>
-            <Grid
-                item
-                sx={{
-                    m: 0,
-                    p: 1,
-                    backgroundColor: '#1976d2',
-                    color: 'white',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                }}
-                id='customized-dialog-title'
-            >
-                Split Details
-                <IconButton size='small' onClick={() => setOpen(false)}>
-                    <CloseIcon sx={{ color: 'white' }} />
-                </IconButton>
-            </Grid>
-            <DialogContent dividers sx={{ padding: '5px' }}>
-                <Grid container direction='row' justify='flex-end' alignItems='center'>
-                    <Grid item xs={12}>
-                        <Tabs
-                            value={splitMethod}
-                            onChange={handleChange}
-                            variant='fullWidth'
-                            TabIndicatorProps={{
-                                style: { backgroundColor: 'transparent' },
-                            }}
-                        >
-                            <StyledTab value='E' label='=' tooltipText='Split Equally' />
-                            <StyledTab value='P' label='%' tooltipText='Split in Percentage' />
-                            <StyledTab
-                                value='U'
-                                label='1.23'
-                                tooltipText='Split in Exact Amounts'
-                            />
-                            <StyledTab
-                                value='S'
-                                icon={<EqualizerIcon />}
-                                tooltipText='Split in Shares'
-                            />
-                        </Tabs>
-                    </Grid>
+        <Grid item xs={12} lg={6} sx={{ display: 'flex', justifyContent: 'center', p: 1 }}>
+            <Paper elevation={2} style={{ maxWidth: '99dvw' }}>
+                <Grid
+                    item
+                    sx={{
+                        m: 0,
+                        p: 1,
+                        backgroundColor: '#1976d2',
+                        color: 'white',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                    }}
+                >
+                    Split Details
+                    <IconButton size='small' onClick={() => setOpen(false)}>
+                        <CloseIcon sx={{ color: 'white' }} />
+                    </IconButton>
                 </Grid>
-                <StyledTabPanel value={splitMethod} index={'E'}>
-                    {splitMethod === 'E' && (
+                <DialogContent dividers sx={{ padding: '5px' }}>
+                    <Grid container direction='row' justify='flex-end' alignItems='center'>
                         <Grid item xs={12}>
-                            <Grid container>
-                                <Grid item xs={12}>
-                                    <Typography variant='h6' sx={{ fontWeight: 600 }}>
-                                        Split Equally
-                                    </Typography>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    {splitDetail?.splitValues?.map((infoDict) => (
-                                        <Grid container key={infoDict.user.email}>
-                                            <Grid item xs={10}>
-                                                {infoDict.user.display_name}
+                            <Tabs
+                                value={splitMethod}
+                                onChange={handleChange}
+                                variant='fullWidth'
+                                TabIndicatorProps={{
+                                    style: { backgroundColor: 'transparent' },
+                                }}
+                            >
+                                <StyledTab value='E' label='=' tooltipText='Split Equally' />
+                                <StyledTab value='P' label='%' tooltipText='Split in Percentage' />
+                                <StyledTab
+                                    value='U'
+                                    label='1.23'
+                                    tooltipText='Split in Exact Amounts'
+                                />
+                                <StyledTab
+                                    value='S'
+                                    icon={<EqualizerIcon />}
+                                    tooltipText='Split in Shares'
+                                />
+                            </Tabs>
+                        </Grid>
+                    </Grid>
+                    <StyledTabPanel value={splitMethod} index={'E'}>
+                        {splitMethod === 'E' && (
+                            <Grid item xs={12}>
+                                <Grid container>
+                                    <Grid item xs={12}>
+                                        <Typography variant='h6' sx={{ fontWeight: 600 }}>
+                                            Split Equally
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        {splitDetail?.splitValues?.map((infoDict) => (
+                                            <Grid container key={infoDict.user.email}>
+                                                <Grid item xs={10}>
+                                                    {infoDict.user.display_name}
+                                                </Grid>
+                                                <Grid item xs={2} sx={{ textAlign: 'end' }}>
+                                                    $
+                                                    {(
+                                                        totalAmount /
+                                                        splitDetail?.splitValues?.length
+                                                    ).toFixed(2)}
+                                                </Grid>
                                             </Grid>
-                                            <Grid item xs={2} sx={{ textAlign: 'end' }}>
-                                                $
-                                                {(
-                                                    totalAmount / splitDetail?.splitValues?.length
-                                                ).toFixed(2)}
+                                        ))}
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Grid container>
+                                            <Grid item xs={8}>
+                                                <strong>Total:</strong>
                                             </Grid>
-                                        </Grid>
-                                    ))}
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <Grid container>
-                                        <Grid item xs={8}>
-                                            <strong>Total:</strong>
-                                        </Grid>
-                                        <Grid item xs={4} sx={{ textAlign: 'end' }}>
-                                            <strong>${totalAmount}</strong>
+                                            <Grid item xs={4} sx={{ textAlign: 'end' }}>
+                                                <strong>${totalAmount}</strong>
+                                            </Grid>
                                         </Grid>
                                     </Grid>
                                 </Grid>
                             </Grid>
-                        </Grid>
-                    )}
-                </StyledTabPanel>
-                <StyledTabPanel value={splitMethod} index={'P'}>
-                    {splitMethod === 'P' && (
-                        <Grid item xs={12}>
-                            <Grid container>
-                                <Grid item xs={12}>
-                                    <Typography variant='h6' sx={{ fontWeight: 600 }}>
-                                        Split in Percentage
-                                    </Typography>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    {splitDetail?.splitValues?.map((infoDict) => (
-                                        <Grid container key={infoDict.user.email} sx={{ mt: 1 }}>
-                                            <Grid item xs={7}>
-                                                {infoDict.user.display_name}
-                                            </Grid>
-                                            <Grid item xs={2} sx={{ textAlign: 'start' }}>
-                                                {`$ ${getUsersAmt(infoDict.user)}`}
-                                            </Grid>
-                                            <Grid item xs={3} sx={{ textAlign: 'end' }}>
-                                                {/* prettier-ignore */}
-                                                <TextField
+                        )}
+                    </StyledTabPanel>
+                    <StyledTabPanel value={splitMethod} index={'P'}>
+                        {splitMethod === 'P' && (
+                            <Grid item xs={12}>
+                                <Grid container>
+                                    <Grid item xs={12}>
+                                        <Typography variant='h6' sx={{ fontWeight: 600 }}>
+                                            Split in Percentage
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        {splitDetail?.splitValues?.map((infoDict) => (
+                                            <Grid
+                                                container
+                                                key={infoDict.user.email}
+                                                sx={{ mt: 1 }}
+                                            >
+                                                <Grid item xs={7}>
+                                                    {infoDict.user.display_name}
+                                                </Grid>
+                                                <Grid item xs={2} sx={{ textAlign: 'start' }}>
+                                                    {`$ ${getUsersAmt(infoDict.user)}`}
+                                                </Grid>
+                                                <Grid item xs={3} sx={{ textAlign: 'end' }}>
+                                                    {/* prettier-ignore */}
+                                                    <TextField
                                                     id={`split-value-${infoDict.user?.id}`}
                                                     size='small'
                                                     variant='standard'
@@ -210,119 +215,128 @@ const SplitDetailsDialog = (props) => {
                                                         startAdornment: <InputAdornment position='start'>%</InputAdornment>,
                                                       }}
                                                 />
+                                                </Grid>
                                             </Grid>
-                                        </Grid>
-                                    ))}
-                                </Grid>
-                                <Grid item xs={12} sx={{ mt: 2 }}>
-                                    <Divider />
-                                    <Grid container sx={{ mt: 1 }}>
-                                        <Grid item xs={8}>
-                                            <strong>Total:</strong>
-                                        </Grid>
-                                        <Grid item xs={4} sx={{ textAlign: 'end' }}>
-                                            <strong>${calculatedTotalText}</strong>
-                                        </Grid>
+                                        ))}
                                     </Grid>
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                    )}
-                </StyledTabPanel>
-                <StyledTabPanel value={splitMethod} index={'U'}>
-                    {splitMethod === 'U' && (
-                        <Grid item xs={12}>
-                            <Grid container>
-                                <Grid item xs={12}>
-                                    <Typography variant='h6' sx={{ fontWeight: 600 }}>
-                                        Split by unequal amounts
-                                    </Typography>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    {splitDetail?.splitValues?.map((infoDict) => (
-                                        <Grid container key={infoDict.user.email} sx={{ mt: 1 }}>
+                                    <Grid item xs={12} sx={{ mt: 2 }}>
+                                        <Divider />
+                                        <Grid container sx={{ mt: 1 }}>
                                             <Grid item xs={8}>
-                                                {infoDict.user.display_name}
+                                                <strong>Total:</strong>
                                             </Grid>
-                                            <Grid item xs={2} sx={{ textAlign: 'start' }}>
-                                                {`$ ${getUsersAmt(infoDict.user)}`}
+                                            <Grid item xs={4} sx={{ textAlign: 'end' }}>
+                                                <strong>${calculatedTotalText}</strong>
                                             </Grid>
-                                            <Grid item xs={2} sx={{ textAlign: 'end' }}>
-                                                <TextField
-                                                    id={`split-value-${infoDict.user?.id}`}
-                                                    size='small'
-                                                    variant='standard'
-                                                    type='number'
-                                                    value={infoDict.value || ''}
-                                                    onChange={handleTextValueChange}
-                                                />
-                                            </Grid>
-                                        </Grid>
-                                    ))}
-                                </Grid>
-                                <Grid item xs={12} sx={{ mt: 2 }}>
-                                    <Divider />
-                                    <Grid container sx={{ mt: 1 }}>
-                                        <Grid item xs={8}>
-                                            <strong>Total:</strong>
-                                        </Grid>
-                                        <Grid item xs={4} sx={{ textAlign: 'end' }}>
-                                            <strong>${calculatedTotalText}</strong>
                                         </Grid>
                                     </Grid>
                                 </Grid>
                             </Grid>
-                        </Grid>
-                    )}
-                </StyledTabPanel>
-                <StyledTabPanel value={splitMethod} index={'S'}>
-                    {splitMethod === 'S' && (
-                        <Grid item xs={12}>
-                            <Grid container>
-                                <Grid item xs={12}>
-                                    <Typography variant='h6' sx={{ fontWeight: 600 }}>
-                                        Split in Shares
-                                    </Typography>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    {splitDetail?.splitValues?.map((infoDict) => (
-                                        <Grid container key={infoDict.user.email} sx={{ mt: 1 }}>
+                        )}
+                    </StyledTabPanel>
+                    <StyledTabPanel value={splitMethod} index={'U'}>
+                        {splitMethod === 'U' && (
+                            <Grid item xs={12}>
+                                <Grid container>
+                                    <Grid item xs={12}>
+                                        <Typography variant='h6' sx={{ fontWeight: 600 }}>
+                                            Split by unequal amounts
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        {splitDetail?.splitValues?.map((infoDict) => (
+                                            <Grid
+                                                container
+                                                key={infoDict.user.email}
+                                                sx={{ mt: 1 }}
+                                            >
+                                                <Grid item xs={8}>
+                                                    {infoDict.user.display_name}
+                                                </Grid>
+                                                <Grid item xs={2} sx={{ textAlign: 'start' }}>
+                                                    {`$ ${getUsersAmt(infoDict.user)}`}
+                                                </Grid>
+                                                <Grid item xs={2} sx={{ textAlign: 'end' }}>
+                                                    <TextField
+                                                        id={`split-value-${infoDict.user?.id}`}
+                                                        size='small'
+                                                        variant='standard'
+                                                        type='number'
+                                                        value={infoDict.value || ''}
+                                                        onChange={handleTextValueChange}
+                                                    />
+                                                </Grid>
+                                            </Grid>
+                                        ))}
+                                    </Grid>
+                                    <Grid item xs={12} sx={{ mt: 2 }}>
+                                        <Divider />
+                                        <Grid container sx={{ mt: 1 }}>
                                             <Grid item xs={8}>
-                                                {infoDict.user.display_name}
+                                                <strong>Total:</strong>
                                             </Grid>
-                                            <Grid item xs={2} sx={{ textAlign: 'start' }}>
-                                                {`$ ${getUsersAmt(infoDict.user)}`}
+                                            <Grid item xs={4} sx={{ textAlign: 'end' }}>
+                                                <strong>${calculatedTotalText}</strong>
                                             </Grid>
-                                            <Grid item xs={2} sx={{ textAlign: 'end' }}>
-                                                <TextField
-                                                    id={`split-value-${infoDict.user?.id}`}
-                                                    size='small'
-                                                    variant='standard'
-                                                    type='number'
-                                                    value={infoDict.value || ''}
-                                                    onChange={handleTextValueChange}
-                                                />
-                                            </Grid>
-                                        </Grid>
-                                    ))}
-                                </Grid>
-                                <Grid item xs={12} sx={{ mt: 2 }}>
-                                    <Divider />
-                                    <Grid container sx={{ mt: 1 }}>
-                                        <Grid item xs={8}>
-                                            <strong>Total:</strong>
-                                        </Grid>
-                                        <Grid item xs={4} sx={{ textAlign: 'end' }}>
-                                            <strong>${calculatedTotalText}</strong>
                                         </Grid>
                                     </Grid>
                                 </Grid>
                             </Grid>
-                        </Grid>
-                    )}
-                </StyledTabPanel>
-            </DialogContent>
-        </Paper>
+                        )}
+                    </StyledTabPanel>
+                    <StyledTabPanel value={splitMethod} index={'S'}>
+                        {splitMethod === 'S' && (
+                            <Grid item xs={12}>
+                                <Grid container>
+                                    <Grid item xs={12}>
+                                        <Typography variant='h6' sx={{ fontWeight: 600 }}>
+                                            Split in Shares
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        {splitDetail?.splitValues?.map((infoDict) => (
+                                            <Grid
+                                                container
+                                                key={infoDict.user.email}
+                                                sx={{ mt: 1 }}
+                                            >
+                                                <Grid item xs={8}>
+                                                    {infoDict.user.display_name}
+                                                </Grid>
+                                                <Grid item xs={2} sx={{ textAlign: 'start' }}>
+                                                    {`$ ${getUsersAmt(infoDict.user)}`}
+                                                </Grid>
+                                                <Grid item xs={2} sx={{ textAlign: 'end' }}>
+                                                    <TextField
+                                                        id={`split-value-${infoDict.user?.id}`}
+                                                        size='small'
+                                                        variant='standard'
+                                                        type='number'
+                                                        value={infoDict.value || ''}
+                                                        onChange={handleTextValueChange}
+                                                    />
+                                                </Grid>
+                                            </Grid>
+                                        ))}
+                                    </Grid>
+                                    <Grid item xs={12} sx={{ mt: 2 }}>
+                                        <Divider />
+                                        <Grid container sx={{ mt: 1 }}>
+                                            <Grid item xs={8}>
+                                                <strong>Total:</strong>
+                                            </Grid>
+                                            <Grid item xs={4} sx={{ textAlign: 'end' }}>
+                                                <strong>${calculatedTotalText}</strong>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        )}
+                    </StyledTabPanel>
+                </DialogContent>
+            </Paper>
+        </Grid>
     );
 };
 
