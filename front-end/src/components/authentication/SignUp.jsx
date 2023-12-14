@@ -85,19 +85,13 @@ function SignUp() {
             <Grid
                 container
                 style={{
-                    backgroundColor: 'darkgray',
                     minHeight: '100%',
                 }}
                 justifyContent={'center'}
                 alignItems={'center'}
             >
-                <Grid item>
-                    <Paper
-                        elevation={3}
-                        style={{
-                            width: '50dvw',
-                        }}
-                    >
+                <Grid item xs={12} lg={6} sx={{ p: 1 }}>
+                    <Paper elevation={3}>
                         <form onSubmit={initiateSignUp}>
                             <Grid container style={{ padding: '7%' }} spacing={2}>
                                 <Grid item xs={12}>

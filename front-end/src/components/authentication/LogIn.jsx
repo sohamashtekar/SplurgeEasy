@@ -89,11 +89,12 @@ function LogIn() {
                 justifyContent={'center'}
                 alignItems={'center'}
             >
-                <Grid item>
+                <Grid item xs={12} lg={6} sx={{ display: 'flex', justifyContent: 'center' }}>
                     <Paper
                         elevation={3}
                         style={{
-                            width: '50dvw',
+                            width: '100%',
+                            height: 'fit-content',
                         }}
                     >
                         <form onSubmit={initiateLogIn}>

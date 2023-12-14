@@ -4,14 +4,14 @@ const CustomDialogPaperBlank = ({ children }) => {
     return (
         <Grid
             container
-            spacing={2}
+            direction={'row'}
+            alignContent={'center'}
             justifyContent={'center'}
-            alignItems={'center'}
-            style={{ height: '100%' }}
+            style={{ height: '100dvh' }}
         >
             {children}
         </Grid>
     );
 };
 
-export default CustomDialogPaperBlank
+export default CustomDialogPaperBlank;
