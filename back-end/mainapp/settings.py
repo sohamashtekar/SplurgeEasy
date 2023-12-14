@@ -86,6 +86,9 @@ CSRF_USE_SESSIONS = True
 # Set CORS_ALLOW_CREDENTIALS to True to allow credentials (e.g., cookies) to be sent with cross-origin requests.
 CORS_ALLOW_CREDENTIALS = True
 
+
+CSRF_TRUSTED_ORIGINS = ['https://*.herokuapp.com']
+
 ROOT_URLCONF = 'mainapp.urls'
 
 TEMPLATES = [
