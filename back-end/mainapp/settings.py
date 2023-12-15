@@ -74,10 +74,9 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
 
-CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # React development server
+    "https://splurge-easy.netlify.app",  # React development server
 ]
 
 # Enable CSRF (Cross-Site Request Forgery) protection for session-based authentication.
