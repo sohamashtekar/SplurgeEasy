@@ -25,7 +25,8 @@ ENV PORT=8000
 # Update apt
 RUN \
     apt-get -q -y update; \
-    apt-get -q -y install nginx
+    apt-get -q -y install nginx; \
+    apt-get -q -y install postgresql;
 
 # Set work directory
 WORKDIR /src/back-end
