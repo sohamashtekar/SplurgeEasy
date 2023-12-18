@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializers import ExpenseSerializer
 
-class SaveExpenseAPIView(APIView):
+class SaveExpenseView(APIView):
     def post(self, request, *args, **kwargs):
         req_data = request.data
         # print(req_data)

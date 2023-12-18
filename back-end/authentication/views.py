@@ -65,7 +65,7 @@ class CustomTokenRefreshView(TokenRefreshView):
         except ObjectDoesNotExist:
             return Response(status=status.HTTP_403_FORBIDDEN)
 
-class UserRegistrationAPIView(APIView):
+class UserRegistrationView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):

@@ -1,14 +1,16 @@
 import { Grid } from '@mui/material';
 import { Routes, Route } from 'react-router-dom';
+import { UserDataProvider } from '../context/UserDataProvider';
 import Dashboard from './dashboard/Dashboard';
+import GroupDetails from './friends/GroupDetails';
 import LandingPage from './landing-page/LandingPage';
 import LogIn from './authentication/LogIn';
 import Missing from './authentication/Missing';
 import Navbar from './layout/Navbar';
+import PersistLogin from './authentication/PersistLogin';
 import React from 'react';
 import RequireAuth from './authentication/RequireAuth';
 import SignUp from './authentication/SignUp';
-import PersistLogin from './authentication/PersistLogin';
 
 function ElementWrapper({ children }) {
     return (
@@ -26,6 +28,25 @@ function ElementWrapper({ children }) {
                 </Grid>
             </Grid>
         </>
+    );
+}
+
+function ProtectedElementWrapper({ children }) {
+    return (
+        <UserDataProvider>
+            <Navbar />
+            <Grid
+                container
+                style={{
+                    padding: '2%',
+                    height: '91dvh',
+                }}
+            >
+                <Grid item xs={12}>
+                    {children}
+                </Grid>
+            </Grid>
+        </UserDataProvider>
     );
 }
 
@@ -67,9 +88,18 @@ function RouteWrapper() {
                     <Route
                         path='/dashboard'
                         element={
-                            <ElementWrapper>
+                            <ProtectedElementWrapper>
                                 <Dashboard />
-                            </ElementWrapper>
+                            </ProtectedElementWrapper>
+                        }
+                    />
+
+                    <Route
+                        path='/group-details/:groupID'
+                        element={
+                            <ProtectedElementWrapper>
+                                <GroupDetails />
+                            </ProtectedElementWrapper>
                         }
                     />
                 </Route>
