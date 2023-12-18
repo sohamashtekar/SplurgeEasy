@@ -263,7 +263,7 @@ function NewExpenseDialog(props) {
                                                     <TextField
                                                         {...params}
                                                         variant='standard'
-                                                        placeholder='Type Name or Email'
+                                                        placeholder='Type Name'
                                                         required={!selectedUsers.length > 0}
                                                     />
                                                 )}
@@ -375,7 +375,7 @@ function NewExpenseDialog(props) {
                                                 autoFocus
                                                 onClick={handleClose}
                                             >
-                                                Cancle
+                                                Cancel
                                             </Button>
                                             <Button
                                                 disabled={loading}
