@@ -1,3 +1,4 @@
+import { CustomDialogHeader } from '../generic/styles/CustomDIalogHeader';
 // prettier-ignore
 import { equallyCalculatedValue, unequallyCalculatedValues, } from './functions/SplitValueCalculations';
 // prettier-ignore
@@ -96,25 +97,14 @@ const SplitDetailsDialog = (props) => {
     const calculatedTotalText = calculateTotalTxtValue();
 
     return (
-        <Grid item xs={12} lg={6} sx={{ display: 'flex', justifyContent: 'center', p: 1 }}>
+        <Grid item xs={12} md={5} sx={{ display: 'flex', justifyContent: 'center', p: 1 }}>
             <Paper elevation={2} style={{ maxWidth: '99dvw' }}>
-                <Grid
-                    item
-                    sx={{
-                        m: 0,
-                        p: 1,
-                        backgroundColor: '#1976d2',
-                        color: 'white',
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                    }}
-                >
+                <CustomDialogHeader item>
                     Split Details
                     <IconButton size='small' onClick={() => setOpen(false)}>
                         <CloseIcon sx={{ color: 'white' }} />
                     </IconButton>
-                </Grid>
+                </CustomDialogHeader>
                 <DialogContent dividers sx={{ padding: '5px' }}>
                     <Grid container direction='row' justify='flex-end' alignItems='center'>
                         <Grid item xs={12}>

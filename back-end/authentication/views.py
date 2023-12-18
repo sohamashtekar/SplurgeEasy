@@ -76,6 +76,8 @@ class UserRegistrationView(APIView):
 
 
 class LogoutView(APIView):
+    permission_classes = [AllowAny]
+    
     def get(self, request):
         try:
             refresh_token = request.COOKIES.get('refresh_token')

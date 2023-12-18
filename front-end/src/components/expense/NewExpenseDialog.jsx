@@ -1,6 +1,7 @@
 import { axiosPrivate } from '../../api/axios';
 // prettier-ignore
 import { Button, Dialog, DialogContent, IconButton, Typography, Grid, Autocomplete, TextField, Divider, Paper, Menu, MenuItem, } from '@mui/material';
+import { CustomDialogHeader } from '../generic/styles/CustomDIalogHeader';
 import { saveExpenseAPI } from '../../api/api';
 import { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
@@ -202,25 +203,14 @@ function NewExpenseDialog(props) {
                 PaperComponent={CustomDialogPaperBlank}
                 disableScrollLock={true}
             >
-                <Grid item xs={12} lg={4} sx={{ display: 'flex', justifyContent: 'center', p: 1 }}>
+                <Grid item xs={12} md={5} sx={{ display: 'flex', justifyContent: 'center', p: 1 }}>
                     <Paper elevation={2} style={{ maxWidth: '99dvw' }}>
-                        <Grid
-                            item
-                            sx={{
-                                m: 0,
-                                p: 1,
-                                backgroundColor: '#1976d2',
-                                color: 'white',
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                alignItems: 'center',
-                            }}
-                        >
+                        <CustomDialogHeader item>
                             Share Expense
                             <IconButton size='small' onClick={() => setOpen(false)}>
                                 <CloseIcon sx={{ color: 'white' }} />
                             </IconButton>
-                        </Grid>
+                        </CustomDialogHeader>
                         <DialogContent dividers sx={{ p: 1 }}>
                             <ExpenseOwnerMenu
                                 userInfo={userInfo}
