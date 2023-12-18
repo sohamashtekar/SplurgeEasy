@@ -5,6 +5,7 @@ const signUpAPI = '/signup/';
 const tokenAPI = '/token/';
 const tokenRefreshAPI = '/token/refresh/';
 const userDataAPI = '/user-data/';
+const userGroupAPI = '/user-group/';
 
 export {
     friendRequestAPI,
@@ -14,4 +15,5 @@ export {
     tokenAPI,
     tokenRefreshAPI,
     userDataAPI,
+    userGroupAPI,
 };
