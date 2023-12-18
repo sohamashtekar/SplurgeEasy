@@ -54,6 +54,15 @@ class ExpenseGroup(models.Model):
     members = models.ManyToManyField('user.CustomUser', related_name='expense_group')
     created_by = models.ForeignKey('user.CustomUser', on_delete=models.PROTECT)
     created_on = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.name
+    
+    @classmethod 
+    def get_groups(cls, user):
+        user_groups = cls.objects.filter(members=user)
+        return user_groups
+        
 
 class Friend(models.Model):
     user1 = models.ForeignKey('user.CustomUser', related_name='user_1', on_delete=models.PROTECT)
