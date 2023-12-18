@@ -1,6 +1,7 @@
 from rest_framework import serializers
-from .models import CustomUser
-from expense.models import Expense, SplitDetail
+from .models import CustomUser, ExpenseGroup
+
+from expense.models import SplitDetail
 
 
 class ExpenseUserSerializer(serializers.ModelSerializer):
@@ -53,3 +54,13 @@ class UserInfoSerializer(serializers.ModelSerializer):
 
     def get_display_name(self, obj):
         return f'{obj.first_name} {obj.last_name}'
+
+
+class UserGroupSerializer(serializers.ModelSerializer):
+    created_by = UserInfoSerializer()
+    members = UserInfoSerializer(many=True)
+    
+    class Meta:
+        model = ExpenseGroup
+        fields = '__all__'
+        

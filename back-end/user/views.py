@@ -4,13 +4,14 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from expense.models import SplitDetail
+from expense.serializers import GroupExpenseDetailsSerializer
 
-from .models import CustomUser, FriendRequest, Friend
-from .serializers import FriendSerializer, UserInfoSerializer
+from .models import CustomUser, FriendRequest, Friend, ExpenseGroup
+from .serializers import FriendSerializer, UserInfoSerializer, UserGroupSerializer
 
 from django.db.models import F
 from django.core.exceptions import ObjectDoesNotExist
+from django.shortcuts import get_object_or_404
 
 
 class FriendRequestView(APIView):
@@ -117,6 +118,14 @@ class UserDataView(APIView):
             friends_data = friends_serializer.data
             response_data['friends'] = friends_data
 
+
+            # Get user's groups
+            groups = ExpenseGroup.get_groups(request.user)
+            print(type(groups))
+            groups_serializer = UserGroupSerializer(groups, many=True)
+            groups_data = groups_serializer.data
+            response_data['groups'] = groups_data
+           
             # Get user's balance sheet
             # SplitDetail.get_users_balance_sheet(request.user)
 
@@ -129,3 +138,23 @@ class UserDataView(APIView):
             print(e)
             traceback.print_exc()
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+class UserGroupView(APIView):
+
+    def post(self, request, *args, **kwargs):
+        serializer = UserGroupSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def get(self, request):
+        group_id = request.query_params.get('group_id')
+
+        group_details = get_object_or_404(ExpenseGroup, id=group_id, members=request.user)        
+        
+        groups_serializer = GroupExpenseDetailsSerializer(group_details)
+        group_details_data = groups_serializer.data
+        
+        return Response(group_details_data, status=status.HTTP_200_OK)
+        
