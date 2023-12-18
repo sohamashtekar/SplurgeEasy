@@ -121,7 +121,6 @@ class UserDataView(APIView):
 
             # Get user's groups
             groups = ExpenseGroup.get_groups(request.user)
-            print(type(groups))
             groups_serializer = UserGroupSerializer(groups, many=True)
             groups_data = groups_serializer.data
             response_data['groups'] = groups_data

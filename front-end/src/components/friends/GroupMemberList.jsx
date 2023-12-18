@@ -33,7 +33,7 @@ const GroupMemberRow = ({ memberItem, isAdmin, removeMember }) => {
 
 const GroupMemberList = (props) => {
     const { groupDetails } = props;
-    const membersList = groupDetails?.members;
+    const membersList = groupDetails?.members || [];
     const createdBy = groupDetails?.created_by;
 
     const { userData } = useUserData();

@@ -6,7 +6,6 @@ from .serializers import ExpenseSerializer
 class SaveExpenseView(APIView):
     def post(self, request, *args, **kwargs):
         req_data = request.data
-        # print(req_data)
         serializer = ExpenseSerializer(data=req_data)
         if serializer.is_valid():
             serializer.save()
