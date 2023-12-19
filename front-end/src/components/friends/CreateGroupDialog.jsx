@@ -1,4 +1,5 @@
 import { axiosPrivate } from '../../api/axios';
+import { CustomDialogHeader } from '../generic/styles/CustomDIalogHeader';
 // prettier-ignore
 import { Dialog, DialogContent, DialogActions, Button, Grid, TextField, Autocomplete, Divider, Paper, IconButton } from '@mui/material';
 import { useState } from 'react';
@@ -42,8 +43,7 @@ const CreateGroupDialog = (props) => {
             setOpen(false);
             alert('Group created!');
         } catch (err) {
-            console.log(err);
-            alert('Error occoured, contact our support team!');
+            alert('Error occurred, contact our support team!');
         } finally {
             setLoading(false);
         }
@@ -59,25 +59,14 @@ const CreateGroupDialog = (props) => {
                 PaperComponent={CustomDialogPaperBlank}
                 disableScrollLock={true}
             >
-                <Grid item xs={12} lg={4} sx={{ display: 'flex', justifyContent: 'center', p: 1 }}>
-                    <Paper elevation={2} style={{ maxWidth: '99dvw' }}>
-                        <Grid
-                            item
-                            sx={{
-                                m: 0,
-                                p: 1,
-                                backgroundColor: '#1976d2',
-                                color: 'white',
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                alignItems: 'center',
-                            }}
-                        >
-                            Share Expense
+                <Grid item xs={12} md={5} sx={{ display: 'flex', justifyContent: 'center', p: 1 }}>
+                    <Paper elevation={2}>
+                        <CustomDialogHeader item>
+                            Create New Group
                             <IconButton size='small' onClick={() => setOpen(false)}>
                                 <CloseIcon sx={{ color: 'white' }} />
                             </IconButton>
-                        </Grid>
+                        </CustomDialogHeader>
                         <form onSubmit={createGroup}>
                             <DialogContent dividers>
                                 <Grid container spacing={2} style={{ minWidth: '200px' }}>

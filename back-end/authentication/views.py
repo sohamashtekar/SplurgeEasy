@@ -27,7 +27,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             secure=True,
             httponly=True,
             samesite='None',
-            max_age=3600,  # Set the desired max age (in seconds)
+            max_age=86400,  # Set the desired max age (in seconds)
         )
 
         # Delete refresh token from response data as we are sending it as a cookie. 
@@ -77,6 +77,8 @@ class UserRegistrationView(APIView):
 
 
 class LogoutView(APIView):
+    permission_classes = [AllowAny]
+    
     def get(self, request):
         try:
             refresh_token = request.COOKIES.get('refresh_token')

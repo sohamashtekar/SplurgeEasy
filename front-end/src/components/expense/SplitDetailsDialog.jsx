@@ -1,15 +1,24 @@
+import { CustomDialogHeader } from '../generic/styles/CustomDIalogHeader';
 // prettier-ignore
 import { equallyCalculatedValue, unequallyCalculatedValues, } from './functions/SplitValueCalculations';
 // prettier-ignore
-import { IconButton, DialogContent, Typography, Grid, Paper, Tabs, TextField, InputAdornment, Divider, } from '@mui/material';
+import { IconButton, DialogContent, Typography, Grid, Paper, Tabs, TextField, InputAdornment, Divider, Checkbox } from '@mui/material';
 import { StyledTab, StyledTabPanel } from './styles/SplitDetailsTabStyles';
 import { useState, useEffect } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import EqualizerIcon from '@mui/icons-material/Equalizer';
 
 const SplitDetailsDialog = (props) => {
-    const { open, setOpen, splitDetail, setSplitDetail, paidBy, totalAmount, splitBetweenUsers } =
-        props;
+    const {
+        open,
+        setOpen,
+        splitDetail,
+        setSplitDetail,
+        paidBy,
+        totalAmount,
+        splitBetweenUsers,
+        expenseType,
+    } = props;
 
     const [splitMethod, setSplitType] = useState(splitDetail?.splitMethod || 'E');
 
@@ -24,23 +33,37 @@ const SplitDetailsDialog = (props) => {
             });
         }
 
+        const onlyIncludedUsers = splitBetweenUsers.filter((user) => {
+            const included = document.getElementById(`included-${user?.id}`)?.checked;
+            return included || included === undefined;
+        });
+
         const splitValues = splitBetweenUsers?.map((splitUser) => {
+            const included = onlyIncludedUsers.find((includedUser) => includedUser === splitUser);
+
+            if (!included) {
+                return {
+                    user: splitUser,
+                    value: 0,
+                    calculatedAmount: 0,
+                };
+            }
+
             const inputValue = splitMethodUpdated
                 ? 0
                 : document.getElementById(`split-value-${splitUser?.id}`)?.value || 0;
 
             const value =
                 splitMethod === 'E'
-                    ? equallyCalculatedValue(totalAmount, splitBetweenUsers)
+                    ? equallyCalculatedValue(totalAmount, onlyIncludedUsers)
                     : inputValue;
 
             const calculatedAmount =
                 splitMethod === 'E'
-                    ? equallyCalculatedValue(totalAmount, splitBetweenUsers)
+                    ? equallyCalculatedValue(totalAmount, onlyIncludedUsers)
                     : unequallyCalculatedValues(totalAmount, inputValue, splitMethod, totalShares);
 
-            const paidByThisUser = paidBy === splitUser;
-
+            const paidByThisUser = paidBy?.id === splitUser?.id;
             return {
                 user: splitUser,
                 value: parseFloat(value),
@@ -75,6 +98,10 @@ const SplitDetailsDialog = (props) => {
         return userAmt ? Math.abs(userAmt).toFixed(2) : 0;
     };
 
+    const handleIncludeChange = (event) => {
+        calculateSplitDetails();
+    };
+
     const handleChange = (event, newValue) => {
         setSplitType(newValue);
     };
@@ -96,25 +123,14 @@ const SplitDetailsDialog = (props) => {
     const calculatedTotalText = calculateTotalTxtValue();
 
     return (
-        <Grid item xs={12} lg={6} sx={{ display: 'flex', justifyContent: 'center', p: 1 }}>
+        <Grid item xs={12} md={5} sx={{ display: 'flex', justifyContent: 'center', p: 1 }}>
             <Paper elevation={2} style={{ maxWidth: '99dvw' }}>
-                <Grid
-                    item
-                    sx={{
-                        m: 0,
-                        p: 1,
-                        backgroundColor: '#1976d2',
-                        color: 'white',
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                    }}
-                >
+                <CustomDialogHeader item>
                     Split Details
                     <IconButton size='small' onClick={() => setOpen(false)}>
                         <CloseIcon sx={{ color: 'white' }} />
                     </IconButton>
-                </Grid>
+                </CustomDialogHeader>
                 <DialogContent dividers sx={{ padding: '5px' }}>
                     <Grid container direction='row' justify='flex-end' alignItems='center'>
                         <Grid item xs={12}>
@@ -153,15 +169,24 @@ const SplitDetailsDialog = (props) => {
                                     <Grid item xs={12}>
                                         {splitDetail?.splitValues?.map((infoDict) => (
                                             <Grid container key={infoDict.user.email}>
-                                                <Grid item xs={10}>
+                                                <Grid
+                                                    item
+                                                    xs={1}
+                                                    sx={{ display: 'flex', alignItems: 'start' }}
+                                                >
+                                                    <Checkbox
+                                                        defaultChecked
+                                                        sx={{ p: 0 }}
+                                                        id={`included-${infoDict.user?.id}`}
+                                                        onChange={handleIncludeChange}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={9}>
                                                     {infoDict.user.display_name}
                                                 </Grid>
                                                 <Grid item xs={2} sx={{ textAlign: 'end' }}>
                                                     $
-                                                    {(
-                                                        totalAmount /
-                                                        splitDetail?.splitValues?.length
-                                                    ).toFixed(2)}
+                                                    {Math.abs(infoDict.calculatedAmount).toFixed(2)}
                                                 </Grid>
                                             </Grid>
                                         ))}
@@ -196,7 +221,19 @@ const SplitDetailsDialog = (props) => {
                                                 key={infoDict.user.email}
                                                 sx={{ mt: 1 }}
                                             >
-                                                <Grid item xs={7}>
+                                                <Grid
+                                                    item
+                                                    xs={1}
+                                                    sx={{ display: 'flex', alignItems: 'start' }}
+                                                >
+                                                    <Checkbox
+                                                        defaultChecked
+                                                        sx={{ p: 0 }}
+                                                        id={`included-${infoDict.user?.id}`}
+                                                        onChange={handleIncludeChange}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={6}>
                                                     {infoDict.user.display_name}
                                                 </Grid>
                                                 <Grid item xs={2} sx={{ textAlign: 'start' }}>
@@ -250,7 +287,19 @@ const SplitDetailsDialog = (props) => {
                                                 key={infoDict.user.email}
                                                 sx={{ mt: 1 }}
                                             >
-                                                <Grid item xs={8}>
+                                                <Grid
+                                                    item
+                                                    xs={1}
+                                                    sx={{ display: 'flex', alignItems: 'start' }}
+                                                >
+                                                    <Checkbox
+                                                        defaultChecked
+                                                        sx={{ p: 0 }}
+                                                        id={`included-${infoDict.user?.id}`}
+                                                        onChange={handleIncludeChange}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={7}>
                                                     {infoDict.user.display_name}
                                                 </Grid>
                                                 <Grid item xs={2} sx={{ textAlign: 'start' }}>
@@ -300,7 +349,19 @@ const SplitDetailsDialog = (props) => {
                                                 key={infoDict.user.email}
                                                 sx={{ mt: 1 }}
                                             >
-                                                <Grid item xs={8}>
+                                                <Grid
+                                                    item
+                                                    xs={1}
+                                                    sx={{ display: 'flex', alignItems: 'start' }}
+                                                >
+                                                    <Checkbox
+                                                        defaultChecked
+                                                        sx={{ p: 0 }}
+                                                        id={`included-${infoDict.user?.id}`}
+                                                        onChange={handleIncludeChange}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={7}>
                                                     {infoDict.user.display_name}
                                                 </Grid>
                                                 <Grid item xs={2} sx={{ textAlign: 'start' }}>

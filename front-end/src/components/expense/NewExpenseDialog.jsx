@@ -1,12 +1,14 @@
 import { axiosPrivate } from '../../api/axios';
 // prettier-ignore
-import { Button, Dialog, DialogContent, IconButton, Typography, Grid, Autocomplete, TextField, Divider, Paper, Menu, MenuItem, } from '@mui/material';
+import { Button, Dialog, DialogContent, IconButton, Typography, Grid, Autocomplete, TextField, Divider, Paper, Menu, MenuItem, ToggleButtonGroup, ToggleButton } from '@mui/material';
+import { CustomDialogHeader } from '../generic/styles/CustomDIalogHeader';
 import { saveExpenseAPI } from '../../api/api';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import CustomDialogPaperBlank from '../generic/CustomDialogPaperBlank';
 import SplitDetailsDialog from './SplitDetailsDialog';
 import useUserData from '../../hooks/useUserData';
+import { GroupAutoComplete, IndividualAutoComplete } from './ExpenseAutoComplete';
 
 function getTodaysDate() {
     const today = new Date();
@@ -42,14 +44,6 @@ function ExpenseOwnerMenu(props) {
             open={Boolean(anchorEl)}
             onClose={handleClose}
         >
-            <MenuItem
-                key={userInfo?.email}
-                onClick={() => {
-                    handleOwnerChange(userInfo);
-                }}
-            >
-                You ({userInfo?.display_name})
-            </MenuItem>
             {options.map((friend) => (
                 <MenuItem
                     key={friend.display_name}
@@ -70,12 +64,15 @@ function NewExpenseDialog(props) {
 
     const userInfo = userData?.user_info;
     const friends = userData?.friends;
+    const groups = userData?.groups;
 
     const [anchorEl, setAnchorEl] = useState(null);
     const [loading, setLoading] = useState(false);
     const [openSplitDetail, setOpenSplitDetail] = useState(false);
 
+    const [expenseType, setExpenseType] = useState('Individual');
     const [selectedUsers, setSelectedUsers] = useState([]);
+    const [selectedGroup, setSelectedGroup] = useState(null);
     const [splitBetweenUsers, setSplitBetweenUsers] = useState([]);
     const [desc, setDesc] = useState('');
     const [totalAmount, setTotalAmount] = useState(0);
@@ -88,17 +85,29 @@ function NewExpenseDialog(props) {
         splitValues: [],
     });
 
+    useEffect(() => {
+        setSelectedUsers([]);
+        setSelectedGroup(null);
+        setSplitBetweenUsers([]);
+    }, [expenseType]);
+
     if (!open) {
         return <></>;
     }
 
+    const handleExpenseTypeChange = (event, newType) => {
+        setExpenseType(newType);
+    };
+
     const getMyAmount = () => {
         const isPaidByMe = paidBy.id === userInfo.id;
         const myShare = splitDetail.splitValues.find((item) => item.user.id === userInfo.id);
+
         const myCalculatedShare = myShare?.calculatedAmount || 0;
         const mySettlement = parseFloat(
             isPaidByMe ? totalAmount - myCalculatedShare : Math.abs(myCalculatedShare)
         ).toFixed(2);
+
         return myCalculatedShare
             ? isPaidByMe
                 ? `You get ${mySettlement}$`
@@ -110,9 +119,15 @@ function NewExpenseDialog(props) {
         setOpen(false);
     };
 
-    const handleSelectedUsersChange = (updatedUsers) => {
-        setSelectedUsers(updatedUsers);
-        setSplitBetweenUsers([...updatedUsers, userInfo]);
+    const handleSelectedUsersChange = (newUsers) => {
+        setSelectedUsers(newUsers);
+        setSplitBetweenUsers([...newUsers, userInfo]);
+    };
+
+    const handleSelectedGroupChange = (newGroup) => {
+        setSelectedGroup(newGroup);
+        const groupMembers = newGroup?.members || [];
+        setSplitBetweenUsers(groupMembers);
     };
 
     const handleSplit = () => {
@@ -166,7 +181,7 @@ function NewExpenseDialog(props) {
                 return {
                     user: item.user.id,
                     split_method: splitDetail.splitMethod,
-                    value: item.value,
+                    value: parseFloat(item.value).toFixed(2),
                     calculated_amount: parseFloat(item.calculatedAmount).toFixed(2),
                 };
             });
@@ -177,6 +192,7 @@ function NewExpenseDialog(props) {
                 split_method: splitDetail.splitMethod,
                 split_detail: splitDetailObj,
                 note: note,
+                group: selectedGroup?.id || null,
                 created_by: userInfo.id,
                 paid_by: paidBy.id,
             };
@@ -202,35 +218,39 @@ function NewExpenseDialog(props) {
                 PaperComponent={CustomDialogPaperBlank}
                 disableScrollLock={true}
             >
-                <Grid item xs={12} lg={4} sx={{ display: 'flex', justifyContent: 'center', p: 1 }}>
+                <Grid item xs={12} md={5} sx={{ display: 'flex', justifyContent: 'center', p: 1 }}>
                     <Paper elevation={2} style={{ maxWidth: '99dvw' }}>
-                        <Grid
-                            item
-                            sx={{
-                                m: 0,
-                                p: 1,
-                                backgroundColor: '#1976d2',
-                                color: 'white',
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                alignItems: 'center',
-                            }}
-                        >
+                        <CustomDialogHeader item>
                             Share Expense
                             <IconButton size='small' onClick={() => setOpen(false)}>
                                 <CloseIcon sx={{ color: 'white' }} />
                             </IconButton>
-                        </Grid>
+                        </CustomDialogHeader>
                         <DialogContent dividers sx={{ p: 1 }}>
                             <ExpenseOwnerMenu
                                 userInfo={userInfo}
-                                options={selectedUsers}
+                                options={splitBetweenUsers}
                                 anchorEl={anchorEl}
                                 setAnchorEl={setAnchorEl}
                                 setPaidBy={setPaidBy}
                             />
                             <form onSubmit={saveExpense}>
                                 <Grid container spacing={1}>
+                                    <Grid item xs={12}>
+                                        <ToggleButtonGroup
+                                            value={expenseType}
+                                            exclusive
+                                            fullWidth
+                                            onChange={handleExpenseTypeChange}
+                                            aria-label='ExpenseType'
+                                            color='primary'
+                                        >
+                                            <ToggleButton value='Individual'>
+                                                Individual
+                                            </ToggleButton>
+                                            <ToggleButton value='Group'>Group</ToggleButton>
+                                        </ToggleButtonGroup>
+                                    </Grid>
                                     <Grid item xs={12}>
                                         <div
                                             style={{
@@ -245,29 +265,21 @@ function NewExpenseDialog(props) {
                                             >
                                                 With <strong>You</strong> and:
                                             </label>
-                                            <Autocomplete
-                                                disabled={loading}
-                                                multiple
-                                                fullWidth
-                                                required
-                                                id='users'
-                                                size='small'
-                                                sx={{ width: '100%' }}
-                                                value={selectedUsers}
-                                                options={friends}
-                                                getOptionLabel={(option) => option.display_name}
-                                                onChange={(event, newValue, reason) => {
-                                                    handleSelectedUsersChange(newValue, reason);
-                                                }}
-                                                renderInput={(params) => (
-                                                    <TextField
-                                                        {...params}
-                                                        variant='standard'
-                                                        placeholder='Type Name'
-                                                        required={!selectedUsers.length > 0}
-                                                    />
-                                                )}
-                                            />
+                                            {expenseType === 'Individual' ? (
+                                                <IndividualAutoComplete
+                                                    disabled={loading}
+                                                    selectedOptions={selectedUsers}
+                                                    Options={friends}
+                                                    handleChange={handleSelectedUsersChange}
+                                                />
+                                            ) : (
+                                                <GroupAutoComplete
+                                                    disabled={loading}
+                                                    selectedOption={selectedGroup}
+                                                    Options={groups}
+                                                    handleChange={handleSelectedGroupChange}
+                                                />
+                                            )}
                                         </div>
                                         <Divider style={{ marginTop: 9 }} />
                                     </Grid>
@@ -403,6 +415,7 @@ function NewExpenseDialog(props) {
                     paidBy={paidBy}
                     totalAmount={totalAmount}
                     splitBetweenUsers={splitBetweenUsers}
+                    expenseType={expenseType}
                 />
             </Dialog>
         </>

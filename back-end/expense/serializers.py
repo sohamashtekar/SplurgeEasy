@@ -36,8 +36,9 @@ class ExpenseSerializer(serializers.ModelSerializer):
             for split_data in split_detail_data:
                 split_data['expense'] = expense.id
                 split_detail_serializer =  SplitDetailSerializer(data=split_data)
-                if split_detail_serializer.is_valid():
+                if split_detail_serializer.is_valid(raise_exception=True):
                     split_detail_serializer.save()
+                    
 
             return expense
         
@@ -51,7 +52,7 @@ class ExpenseDetailSerializer(serializers.ModelSerializer):
         fields = '__all__'
         
     def get_split_details(self, obj):
-        remaining_balances_qs = obj.split_detail_set.filter(is_settled=False)
+        remaining_balances_qs = obj.expense_details.filter(is_settled=False)
         remaining_balances_serializer = SplitDetailSerializer(remaining_balances_qs, many=True)
         remaining_balances_data = remaining_balances_serializer.data
         return remaining_balances_data
