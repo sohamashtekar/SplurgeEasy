@@ -82,7 +82,7 @@ const GroupExpenseRow = ({ expenseItem, editExpense, currentUser }) => {
 
 const GroupExpenses = (props) => {
     const { groupDetails } = props;
-    const groupExpenses = groupDetails?.balances;
+    const groupExpenses = groupDetails?.balances || [];
 
     const { userData } = useUserData();
     const currentUser = userData?.user_info;

@@ -16,7 +16,7 @@ const GroupsAndFriendsSection = () => {
         <>
             {addFriend && <AddFriendDialog open={addFriend} setOpen={setAddFriend} />}
             {createGroup && <CreateGroupDialog open={createGroup} setOpen={setCreateGroup} />}
-            <Grid container style={{ padding: 3, height: '100%' }}>
+            <Grid container spacing={2} style={{ padding: 3, height: '100%' }}>
                 <Grid item xs={12}>
                     <Grid container justifyContent='center' style={{ backgroundColor: '#e0e0e0' }}>
                         <Grid item style={{ display: 'flex', alignItems: 'center' }}>

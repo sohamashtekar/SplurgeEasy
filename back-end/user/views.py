@@ -4,10 +4,11 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from expense.serializers import GroupExpenseDetailsSerializer
+from expense.serializers import GroupExpenseDetailsSerializer, ExpenseDetailSerializer
 
 from .models import CustomUser, FriendRequest, Friend, ExpenseGroup
 from .serializers import FriendSerializer, UserInfoSerializer, UserGroupSerializer
+from .query_functions import *
 
 from django.db.models import F
 from django.core.exceptions import ObjectDoesNotExist
@@ -124,13 +125,11 @@ class UserDataView(APIView):
             groups_serializer = UserGroupSerializer(groups, many=True)
             groups_data = groups_serializer.data
             response_data['groups'] = groups_data
+            
+            # Summary for the dashboard
+            dashboard_summary = get_dashboard_summary(request.user.id)
+            response_data['summary'] = dashboard_summary
            
-            # Get user's balance sheet
-            # SplitDetail.get_users_balance_sheet(request.user)
-
-            # amount_owes_serializer = TotalOwedSerializer(amount_owes, many=True)
-            # amount_owes_data = amount_owes_serializer.data
-            # response_data['amount_owes'] = amount_owes_data
 
             return Response(data=response_data, status=status.HTTP_201_CREATED)
         except Exception as e:
@@ -156,4 +155,13 @@ class UserGroupView(APIView):
         group_details_data = groups_serializer.data
         
         return Response(group_details_data, status=status.HTTP_200_OK)
+        
+class FriendExpensesView(APIView):
+    def get(self, request):
+        friend_id = request.query_params.get('friend_id')
+        friend_balance_details = get_friend_balance_details(request.user.id, friend_id)
+        expense_details_serializer = ExpenseDetailSerializer(friend_balance_details, many=True)
+        expenses_detailed_data = expense_details_serializer.data
+        
+        return Response(expenses_detailed_data, status=status.HTTP_200_OK)
         

@@ -11,7 +11,7 @@ export const ExpenseTitle = styled('div')(({ theme }) => ({
 }));
 
 export const ExpenseAmountPay = styled('span')(({ theme }) => ({
-    fontSize: '3dvw',
+    fontSize: '3.5dvw',
     color: '#f44336',
     [theme.breakpoints.up('md')]: {
         fontSize: '1.5dvw',
@@ -22,8 +22,8 @@ export const ExpenseAmountPay = styled('span')(({ theme }) => ({
 }));
 
 export const ExpenseAmountGet = styled('span')(({ theme }) => ({
-    fontSize: '3dvw',
-    color: '#00e676',
+    fontSize: '3.5dvw',
+    color: '#5bc5a7',
     [theme.breakpoints.up('md')]: {
         fontSize: '1.5dvw',
     },
