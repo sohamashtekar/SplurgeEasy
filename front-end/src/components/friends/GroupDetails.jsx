@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import fetchGroupDetails from '../../react-query/fetch-group-details';
 import GroupMemberList from './GroupMemberList';
 import LoadingBackdrop from '../generic/LoadingBackdrop';
+import GroupExpenses from './GroupExpenses';
 
 const GroupDetails = () => {
     const { groupID } = useParams();
@@ -31,6 +32,11 @@ const GroupDetails = () => {
                             <Typography variant='h5' style={{ fontWeight: 500 }}>
                                 Shared Expenses
                             </Typography>
+                        </Grid>
+                    </Grid>
+                    <Grid container>
+                        <Grid item xs={12}>
+                            <GroupExpenses groupDetails={groupDetails} />
                         </Grid>
                     </Grid>
                 </Grid>

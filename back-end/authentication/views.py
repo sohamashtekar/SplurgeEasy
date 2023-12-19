@@ -26,7 +26,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             value=response.data['refresh'],
             secure=False,   # Set to True in production
             httponly=True,
-            max_age=3600,  # Set the desired max age (in seconds)
+            max_age=86400,  # Set the desired max age (in seconds)
         )
 
         # Delete refresh token from response data as we are sending it as a cookie. 
