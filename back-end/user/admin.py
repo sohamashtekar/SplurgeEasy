@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import FriendRequest, ExpenseGroup
+from .models import FriendRequest, ExpenseGroup, CustomUser
 
 # Register your models here.
 
@@ -13,3 +13,8 @@ class UserGroupAdmin(admin.ModelAdmin):
     list_display = ['id', 'name', 'created_by']
 
 admin.site.register(ExpenseGroup, UserGroupAdmin)
+
+class UserAdmin(admin.ModelAdmin):
+    list_display = ['id', 'email', 'first_name', 'last_name']
+
+admin.site.register(CustomUser, UserAdmin)

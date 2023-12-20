@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import CustomUser, ExpenseGroup
 
-from expense.models import SplitDetail
+from expense.models import SplitDetail, Expense
 
 
 class ExpenseUserSerializer(serializers.ModelSerializer):
@@ -37,12 +37,6 @@ class FriendSerializer(serializers.ModelSerializer):
         total_balance = sum(all_expense_amounts)
         
         return total_balance
-    
-    def get_detailed_expenses(self, obj):
-        expenses_paid_by_friend_qs = SplitDetail.objects.filter(expense__paid_by=obj,  user__in=[self.request_user.id], is_settled=False)
-        expenses_paid_by_user_qs = SplitDetail.objects.filter(expense__paid_by=self.request_user,  user__in=[obj], is_settled=False)
-        
-        return []
         
 
 class UserInfoSerializer(serializers.ModelSerializer):

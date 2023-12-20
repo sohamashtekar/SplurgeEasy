@@ -1,6 +1,8 @@
 import { Grid, Typography, Button } from '@mui/material';
-import useUserData from '../../hooks/useUserData';
 import { useNavigate } from 'react-router-dom';
+import DescriptionIcon from '@mui/icons-material/Description';
+import textClasses from '../generic/styles/TextStyling.module.css';
+import useUserData from '../../hooks/useUserData';
 
 const GroupRow = ({ groupItem }) => {
     const navigate = useNavigate();
@@ -10,18 +12,16 @@ const GroupRow = ({ groupItem }) => {
             <Grid container alignItems='center'>
                 <Grid item xs={6} sm={6}>
                     <Typography variant='p' sx={{ mb: 0 }}>
-                        <div>{name}</div>
-                        <div style={{ fontSize: '10px' }}>
+                        <div className={textClasses.nameHeader}>{name}</div>
+                        <div className={textClasses.emailSubText}>
                             Created by: {created_by.display_name}
                         </div>
                     </Typography>
                 </Grid>
                 <Grid item xs={6} sm={6} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <Button
-                        variant='contained'
-                        color='primary'
-                        size='small'
-                        elevation={0}
+                        sx={{ color: 'black' }}
+                        startIcon={<DescriptionIcon />}
                         onClick={() => {
                             navigate(`/group-details/${id}`);
                         }}
