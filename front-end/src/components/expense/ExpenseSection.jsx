@@ -57,7 +57,7 @@ const ExpenseSection = () => {
                                 xs={12}
                                 style={{
                                     textAlign: 'center',
-                                    backgroundColor: '#e0e0e0',
+                                    backgroundColor: '#E0E0E0',
                                 }}
                             >
                                 <span className={textClasses.sectionHeader}>
@@ -77,7 +77,7 @@ const ExpenseSection = () => {
                                 xs={12}
                                 style={{
                                     textAlign: 'center',
-                                    backgroundColor: '#e0e0e0',
+                                    backgroundColor: '#E0E0E0',
                                 }}
                             >
                                 <span className={textClasses.sectionHeader}>
