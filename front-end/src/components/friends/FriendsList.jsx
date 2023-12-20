@@ -1,28 +1,17 @@
-import { Grid, Typography, Button } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import useUserData from '../../hooks/useUserData';
+import textClasses from '../generic/styles/TextStyling.module.css';
 
 const FriendRow = ({ friendItem }) => {
     const { display_name, email } = friendItem;
     return (
         <Grid item xs={12} sx={{ pt: 1 }}>
             <Grid container alignItems='center'>
-                <Grid item xs={6} sm={6}>
+                <Grid item xs={12}>
                     <Typography variant='p' sx={{ mb: 0 }}>
-                        <div>{display_name}</div>
-                        <div style={{ fontSize: '10px' }}>{email}</div>
+                        <div className={textClasses.nameHeader}>{display_name}</div>
+                        <div className={textClasses.emailSubText}>{email}</div>
                     </Typography>
-                </Grid>
-                <Grid item xs={6} sm={6} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                    <Button
-                        disabled={true}
-                        variant='contained'
-                        color='primary'
-                        size='small'
-                        elevation={0}
-                        onClick={() => {}}
-                    >
-                        Activity
-                    </Button>
                 </Grid>
             </Grid>
         </Grid>

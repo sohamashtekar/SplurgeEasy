@@ -1,0 +1,26 @@
+.sectionHeader {
+    font-size: clamp(22px, 3dvw, 30px);
+    font-weight: 500;
+}
+
+.subHeader {
+    font-size: clamp(18px, 2dvw, 26px);
+}
+
+.subValueText {
+    font-weight: 600;
+    font-size: clamp(18px, 1.7dvw, 24px);
+    margin-left: 2px;
+}
+
+.nameHeader {
+    font-size: clamp(17px, 2dvw, 22px);
+}
+
+.emailSubText {
+    font-size: clamp(12px, 1.6dvw, 16px);
+}
+
+.btnText {
+    font-size: clamp(17px, 2dvw, 22px);
+}

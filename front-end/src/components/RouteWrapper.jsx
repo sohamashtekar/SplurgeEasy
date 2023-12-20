@@ -19,7 +19,7 @@ function ElementWrapper({ children }) {
             <Grid
                 container
                 style={{
-                    padding: '2%',
+                    padding: '1dvh',
                     height: '91dvh',
                 }}
             >
@@ -38,7 +38,7 @@ function ProtectedElementWrapper({ children }) {
             <Grid
                 container
                 style={{
-                    padding: '2%',
+                    padding: '1dvh',
                     height: '91dvh',
                 }}
             >
