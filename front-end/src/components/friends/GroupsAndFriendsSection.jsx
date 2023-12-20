@@ -19,17 +19,23 @@ const GroupsAndFriendsSection = () => {
             {createGroup && <CreateGroupDialog open={createGroup} setOpen={setCreateGroup} />}
             <Grid container spacing={2} style={{ padding: 3, height: '100%' }}>
                 <Grid item xs={12}>
-                    <Grid container justifyContent='center' style={{ backgroundColor: '#e0e0e0' }}>
+                    <Grid container justifyContent='center' alignItems={'center'} style={{ backgroundColor: '#E0E0E0' }}>
                         <Grid item style={{ display: 'flex', alignItems: 'center' }}>
                             <GroupsIcon />
                         </Grid>
                         <Grid item style={{ paddingLeft: 5, textAlign: 'center' }}>
                             <span className={textClasses.sectionHeader}>Friends</span>
                         </Grid>
-                        <Grid item style={{ right: '1dvw', position: 'absolute' }}>
+                        <Grid
+                            item
+                            sx={{
+                                right: { xs: '3dvw', md: '2dvw', lg: '1dvw' },
+                                position: 'absolute',
+                            }}
+                        >
                             <Button
                                 className={textClasses.btnText}
-                                sx={{ color: 'black' }}
+                                sx={{ color: 'black', p: 0 }}
                                 startIcon={<PersonAddIcon />}
                                 onClick={() => {
                                     setAddFriend(true);
@@ -47,17 +53,28 @@ const GroupsAndFriendsSection = () => {
                     </Grid>
                 </Grid>
                 <Grid item xs={12}>
-                    <Grid container justifyContent='center' style={{ backgroundColor: '#e0e0e0' }}>
+                    <Grid
+                        container
+                        justifyContent='center'
+                        alignItems={'center'}
+                        style={{ backgroundColor: '#E0E0E0' }}
+                    >
                         <Grid item style={{ display: 'flex', alignItems: 'center' }}>
                             <GroupsIcon />
                         </Grid>
                         <Grid item style={{ paddingLeft: 5, textAlign: 'center' }}>
                             <span className={textClasses.sectionHeader}>Groups</span>
                         </Grid>
-                        <Grid item style={{ right: '1dvw', position: 'absolute' }}>
+                        <Grid
+                            item
+                            sx={{
+                                right: { xs: '3dvw', md: '2dvw', lg: '1dvw' },
+                                position: 'absolute',
+                            }}
+                        >
                             <Button
                                 className={textClasses.btnText}
-                                sx={{ color: 'black' }}
+                                sx={{ color: 'black', p: 0 }}
                                 startIcon={<PersonAddIcon />}
                                 onClick={() => {
                                     setCreateGroup(true);

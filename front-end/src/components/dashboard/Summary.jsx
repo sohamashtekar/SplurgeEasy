@@ -29,7 +29,7 @@ const Summary = () => {
                         container
                         justifyContent={'space-between'}
                         alignItems={'center'}
-                        sx={{ backgroundColor: '#e0e0e0', p: '2px' }}
+                        sx={{ backgroundColor: '#E0E0E0', p: '2px' }}
                     >
                         <Grid item xs={6}>
                             <span className={textClasses.sectionHeader}>Summary</span>

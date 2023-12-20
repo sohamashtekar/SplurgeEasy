@@ -1,6 +1,7 @@
-import { Grid, Typography, IconButton } from '@mui/material';
+import { Grid, Typography, IconButton, Divider } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import useUserData from '../../hooks/useUserData';
+import textClasses from '../generic/styles/TextStyling.module.css';
 
 const month = [
     'Jan',
@@ -33,37 +34,49 @@ const GroupExpenseRow = ({ expenseItem, editExpense, currentUser }) => {
         ? parsedTotalAmt - Math.abs(currentUserSplitAmt)
         : currentUserSplitAmt;
 
+    const ExpenseAmountColor = didCurrentUserPay ? '#5BC5A7' : '#F44336';
+
     return (
         <Grid item xs={12} sx={{ pt: 1 }}>
-            <Grid container justifyContent={'space-between'} alignItems={'center'}>
+            <Grid container justifyContent={'space-between'} alignItems={'flex-start'}>
                 <Grid item>
                     <Typography variant='p' sx={{ mb: 0 }}>
-                        <div>{creation_mon}</div>
-                        <div style={{ fontSize: '10px' }}>{creation_day}</div>
+                        <div className={textClasses.subValueText}>{creation_mon}</div>
+                        <div className={textClasses.subValueText}>{creation_day}</div>
                     </Typography>
                 </Grid>
+                <Divider orientation='vertical' flexItem />
                 <Grid item>
-                    <Typography variant='p' sx={{ mb: 0 }}>
-                        <div>{description}</div>
-                    </Typography>
+                    <div className={textClasses.subValueText}>{description}</div>
                 </Grid>
+                <Divider orientation='vertical' flexItem />
                 <Grid item>
                     <Typography variant='p' sx={{ mb: 0 }}>
                         <div>
-                            {didCurrentUserPay ? 'You paid' : paid_by.display_name}
-                            <span style={{ fontSize: '10px' }}></span>
+                            <span className={textClasses.subValueText}>
+                                {didCurrentUserPay ? 'You paid' : paid_by.display_name}
+                            </span>
                         </div>
-                        <div style={{ fontSize: '10px' }}>
+                        <div className={textClasses.subValueText}>
                             {didCurrentUserPay ? `$${total_amount}` : `paid: ${total_amount}`}
                         </div>
                     </Typography>
                 </Grid>
+                <Divider orientation='vertical' flexItem />
                 <Grid item>
                     <Typography variant='p' sx={{ mb: 0 }}>
-                        <div>{didCurrentUserPay ? 'You Get' : 'You Pay'}</div>
-                        <div style={{ fontSize: '10px' }}>${currentUserAmt}</div>
+                        <div className={textClasses.subValueText}>
+                            {didCurrentUserPay ? 'You Get' : 'You Pay'}
+                        </div>
+                        <div
+                            className={textClasses.subValueText}
+                            style={{ color: ExpenseAmountColor }}
+                        >
+                            ${currentUserAmt}
+                        </div>
                     </Typography>
                 </Grid>
+                <Divider orientation='vertical' flexItem />
                 <Grid item sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <IconButton
                         color='error'

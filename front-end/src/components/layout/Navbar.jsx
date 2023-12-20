@@ -9,16 +9,19 @@ import {
     Button,
     Grid,
 } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import AccountCircle from '@mui/icons-material/AccountCircle';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import useAuth from '../../hooks/useAuth';
 import useLogout from '../../hooks/useLogout';
 
 function Navbar() {
+    const location = useLocation();
     const navigate = useNavigate();
     const logout = useLogout();
 
+    console.log(location.pathname);
     const { auth } = useAuth();
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -52,6 +55,16 @@ function Navbar() {
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position='static'>
                 <Toolbar>
+                    {location.pathname !== '/dashboard' && (
+                        <IconButton
+                            size='large'
+                            onClick={goToDashboard}
+                            color='inherit'
+                            sx={{ paddingLeft: 0, display: { xs: 'block', md: 'none' } }}
+                        >
+                            <ArrowBackIcon />
+                        </IconButton>
+                    )}
                     <Typography
                         variant='h6'
                         component='div'
