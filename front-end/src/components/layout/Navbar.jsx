@@ -39,6 +39,10 @@ function Navbar() {
         navigate('/signup');
     };
 
+    const goToDashboard = () => {
+        navigate('/dashboard');
+    };
+
     const handleLogOut = async () => {
         await logout();
         navigate('/');
@@ -53,6 +57,7 @@ function Navbar() {
                         component='div'
                         sx={{ flexGrow: 1, textAlign: 'start' }}
                         style={{ fontWeight: 600 }}
+                        onClick={goToDashboard}
                     >
                         SplurgeEasy
                     </Typography>

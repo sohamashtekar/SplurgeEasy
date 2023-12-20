@@ -22,4 +22,4 @@ def get_dashboard_summary(current_user_id):
     total_balance = sum(all_expense_amounts)
     
     
-    return {'expenses_owe': expenses_owe, 'expenses_owed': expenses_owed, 'total_balance': total_balance}
+    return {'expenses_owe': abs(expenses_owe), 'expenses_owed': expenses_owed, 'total_balance': total_balance}

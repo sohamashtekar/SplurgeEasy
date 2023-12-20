@@ -1,13 +1,14 @@
-import { Grid } from '@mui/material';
+import { Grid, Divider } from '@mui/material';
 import ExpenseSection from '../expense/ExpenseSection';
 import GroupsAndFriendsSection from '../friends/GroupsAndFriendsSection';
 import Summary from './Summary';
 
 function Dashboard() {
     return (
-        <Grid container alignContent={'flex-start'} spacing={2} style={{ minHeight: '100%' }}>
-            <Grid item xs={12} sx={{ maxHeight: '20dvh' }}>
+        <Grid container alignContent={'flex-start'} spacing={1}>
+            <Grid item xs={12}>
                 <Summary />
+                <Divider />
             </Grid>
             <Grid item xs={12} md={6}>
                 <ExpenseSection />

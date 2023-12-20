@@ -1,6 +1,6 @@
-import { ExpenseTitle, ExpenseAmountPay, ExpenseAmountGet } from './styles/UserBalancesStyles';
-import { Grid, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
 import useUserData from '../../hooks/useUserData';
+import textClasses from '../generic/styles/TextStyling.module.css';
 
 const AmountOwed = ({ expenseItem }) => {
     const { display_name, balance } = expenseItem;
@@ -10,11 +10,10 @@ const AmountOwed = ({ expenseItem }) => {
             <Grid item xs={12} sx={{ pt: 1 }}>
                 <Grid container alignItems='center'>
                     <Grid item xs={12} sx={{ m: 1 }}>
-                        <ExpenseTitle>{display_name}</ExpenseTitle>
-                        <ExpenseAmountPay>you owe </ExpenseAmountPay>
-                        <ExpenseAmountPay sx={{ fontWeight: 'bold' }}>
-                            ${Math.abs(balance)}
-                        </ExpenseAmountPay>
+                        <div className={textClasses.nameHeader}>{display_name}</div>
+                        <span className={textClasses.subValueText} style={{ color: '#F44336' }}>
+                            you owe ${Math.abs(balance)}
+                        </span>
                     </Grid>
                 </Grid>
             </Grid>
@@ -30,11 +29,10 @@ const AmountOwes = ({ expenseItem }) => {
             <Grid item xs={12} sx={{ pt: 1 }}>
                 <Grid container alignItems='center'>
                     <Grid item xs={12} sx={{ m: 1 }}>
-                        <ExpenseTitle>{display_name}</ExpenseTitle>
-                        <ExpenseAmountGet>you get </ExpenseAmountGet>
-                        <ExpenseAmountGet sx={{ fontWeight: 'bold' }}>
-                            ${Math.abs(balance)}
-                        </ExpenseAmountGet>
+                        <div className={textClasses.nameHeader}>{display_name}</div>
+                        <span className={textClasses.subValueText} style={{ color: '#5BC5A7' }}>
+                            you get ${Math.abs(balance)}
+                        </span>
                     </Grid>
                 </Grid>
             </Grid>
@@ -62,14 +60,10 @@ const ExpenseSection = () => {
                                     backgroundColor: '#e0e0e0',
                                 }}
                             >
-                                <Typography
-                                    variant='h5'
-                                    component='div'
-                                    style={{ fontWeight: 500 }}
-                                >
+                                <span className={textClasses.sectionHeader}>
                                     <span style={{ color: 'black' }}>You </span>
                                     <span style={{ color: '#f44336', fontWeight: 600 }}>Pay</span>
-                                </Typography>
+                                </span>
                             </Grid>
                             <Grid item xs={12}>
                                 {amountUserPays.map((item) => (
@@ -86,14 +80,10 @@ const ExpenseSection = () => {
                                     backgroundColor: '#e0e0e0',
                                 }}
                             >
-                                <Typography
-                                    variant='h5'
-                                    component='div'
-                                    style={{ fontWeight: 500 }}
-                                >
+                                <span className={textClasses.sectionHeader}>
                                     <span style={{ color: 'black' }}>You </span>
                                     <span style={{ color: '#5bc5a7', fontWeight: 600 }}>Get</span>
-                                </Typography>
+                                </span>
                             </Grid>
                             <Grid item xs={12}>
                                 {amountUserGets.map((item) => (
