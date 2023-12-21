@@ -3,13 +3,11 @@ import { signUpAPI } from '../../api/api';
 import { useNavigate } from 'react-router-dom';
 import axios from '../../api/axios';
 import React, { useState, useEffect } from 'react';
-import CustomAlert from '../generic/CustomAlert';
 import LoadingBackdrop from '../generic/LoadingBackdrop';
 
 function SignUp() {
     const navigate = useNavigate();
 
-    const [success, setSuccess] = useState(false);
     const [loading, setLoading] = useState(false);
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -53,7 +51,7 @@ function SignUp() {
                 setConfirmPassword('');
                 setErrMsg('');
                 setFieldErrs({});
-                setSuccess(true);
+                navigate(`/login/${email}`);
             }
         } catch (err) {
             setLoading(false);
@@ -70,18 +68,7 @@ function SignUp() {
     return (
         <>
             <LoadingBackdrop open={loading} />
-            {success && (
-                <CustomAlert
-                    open={true}
-                    message={'Sign up complete, proceed to login!'}
-                    severity={'success'}
-                    action={
-                        <Button color='inherit' size='small' onClick={(e) => navigate('/login')}>
-                            Log In
-                        </Button>
-                    }
-                />
-            )}
+
             <Grid
                 container
                 style={{
