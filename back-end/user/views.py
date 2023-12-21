@@ -28,11 +28,11 @@ class FriendRequestView(APIView):
                 email=F('from_user__email')
             )
 
-            resposne_data = {
+            response_data = {
                 'friend_requests': friend_requests,
             }
             
-            return Response(data=resposne_data, status=status.HTTP_201_CREATED)
+            return Response(data=response_data, status=status.HTTP_201_CREATED)
 
         except Exception as e:
             print(e)
@@ -61,14 +61,14 @@ class FriendRequestView(APIView):
                 created = True
                 friend_request = FriendRequest.objects.create(from_user=request.user, to_email=to_email)
 
-            resposne_data = {
+            response_data = {
                 'isSeUser': bool(to_user),
                 'requestCreated': created,
                 'isPreviousRequestPending': is_request_pending_or_accepted,
                 'areUserFriends': are_friends
             }
             
-            return Response(data=resposne_data, status=status.HTTP_201_CREATED)
+            return Response(data=response_data, status=status.HTTP_201_CREATED)
 
         except Exception as e:
             traceback.print_exc()
@@ -155,6 +155,31 @@ class UserGroupView(APIView):
         group_details_data = groups_serializer.data
         
         return Response(group_details_data, status=status.HTTP_200_OK)
+    
+    def patch(self, request):
+        group_id = request.data.get('id')
+        updated_members = request.data.get('updated_members', None)
+        member_to_remove = request.data.get('member_to_remove', None)
+        user = request.user
+        
+        group = get_object_or_404(ExpenseGroup, id=group_id, members=user)
+        
+        # Add new members
+        if updated_members:    
+            users_to_add = CustomUser.objects.filter(id__in=updated_members)
+            if not users_to_add:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+        
+            group.members.add(*users_to_add)
+            group.save()
+            
+        # Remove member from the group
+        if member_to_remove:
+            user_to_remove = get_object_or_404(CustomUser, id=member_to_remove)
+            group.members.remove(user_to_remove)
+            group.save()
+        
+        return Response(status=status.HTTP_200_OK)
         
 class FriendExpensesView(APIView):
     def get(self, request):

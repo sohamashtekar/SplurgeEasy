@@ -1,47 +1,51 @@
 import { axiosPrivate } from '../../api/axios';
 import { CustomDialogHeader } from '../generic/styles/CustomDIalogHeader';
 // prettier-ignore
-import { Dialog, DialogContent, DialogActions, Button, Grid, TextField, Autocomplete, Divider, Paper, IconButton } from '@mui/material';
+import { Dialog, DialogContent, DialogActions, Button, Grid, TextField, Autocomplete, Divider, Paper, IconButton, } from '@mui/material';
 import { userGroupAPI } from '../../api/api';
 import { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import CustomDialogPaperBlank from '../generic/CustomDialogPaperBlank';
 import useUserData from '../../hooks/useUserData';
 
-const CreateGroupDialog = (props) => {
-    const { open, setOpen } = props;
+const AddGroupMembersDialog = (props) => {
     const { userData, userDataQuery } = useUserData();
-
-    const userInfo = userData?.user_info;
-    const friends = userData?.friends;
+    const { groupDetails, groupDetailsQuery, open, setOpen } = props;
 
     const [loading, setLoading] = useState(false);
+    const [newGroupMembers, setNewGroupMembers] = useState([]);
 
-    const [groupName, setGroupName] = useState('');
-    const [groupMembers, setGroupMembers] = useState([]);
+    if (!open) {
+        return <></>;
+    }
+
+    const groupMembers = groupDetails?.members.map((member) => member.id) || [];
+    const friendsNotInThisGroup = userData?.friends?.filter(
+        (friend) => !groupMembers.includes(friend.id)
+    );
 
     const handleClose = () => {
         setOpen(false);
     };
 
     const handleGroupMembersChange = (updatedMembers) => {
-        setGroupMembers(updatedMembers);
+        setNewGroupMembers(updatedMembers);
     };
 
-    const createGroup = async (e) => {
+    const updateGroup = async (e) => {
         e.preventDefault();
         setLoading(true);
         try {
-            const groupMembersId = [...groupMembers, userInfo]?.map((item) => item.id);
+            const updatedMembersId = newGroupMembers?.map((item) => item.id);
             const requestData = {
-                name: groupName,
-                members: groupMembersId,
-                created_by: userInfo.id,
+                id: groupDetails.id,
+                updated_members: updatedMembersId,
             };
-            await axiosPrivate.post(userGroupAPI, requestData);
+            await axiosPrivate.patch(userGroupAPI, requestData);
             userDataQuery.refetch();
+            groupDetailsQuery.refetch();
             setOpen(false);
-            alert('Group created!');
+            alert('Members added!');
         } catch (err) {
             alert('Error occurred, contact our support team!');
         } finally {
@@ -60,14 +64,14 @@ const CreateGroupDialog = (props) => {
                 disableScrollLock={true}
             >
                 <Grid item xs={12} md={5} sx={{ display: 'flex', justifyContent: 'center', p: 1 }}>
-                    <Paper elevation={2}>
+                    <Paper elevation={2} sx={{ minWidth: '-webkit-fill-available' }}>
                         <CustomDialogHeader item>
-                            Create New Group
+                            Add Members
                             <IconButton size='small' onClick={() => setOpen(false)}>
                                 <CloseIcon sx={{ color: 'white' }} />
                             </IconButton>
                         </CustomDialogHeader>
-                        <form onSubmit={createGroup}>
+                        <form onSubmit={updateGroup}>
                             <DialogContent dividers>
                                 <Grid container spacing={2} style={{ minWidth: '200px' }}>
                                     <Grid item xs={12}>
@@ -78,39 +82,6 @@ const CreateGroupDialog = (props) => {
                                                 alignItems: 'center',
                                             }}
                                         >
-                                            <label
-                                                htmlFor='group_name'
-                                                style={{ marginRight: 10, textWrap: 'nowrap' }}
-                                            >
-                                                Group Name:
-                                            </label>
-                                            <TextField
-                                                required
-                                                fullWidth
-                                                id='group_name'
-                                                variant='standard'
-                                                size='small'
-                                                value={groupName}
-                                                onChange={(e) => {
-                                                    setGroupName(e.target.value);
-                                                }}
-                                            />
-                                        </div>
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <div
-                                            style={{
-                                                display: 'flex',
-                                                justifyContent: 'start',
-                                                alignItems: 'center',
-                                            }}
-                                        >
-                                            <label
-                                                htmlFor='users'
-                                                style={{ marginRight: 5, textWrap: 'nowrap' }}
-                                            >
-                                                With <strong>You</strong> and:
-                                            </label>
                                             <Autocomplete
                                                 disabled={loading}
                                                 multiple
@@ -119,8 +90,8 @@ const CreateGroupDialog = (props) => {
                                                 id='users'
                                                 size='small'
                                                 sx={{ width: '100%' }}
-                                                value={groupMembers}
-                                                options={friends}
+                                                value={newGroupMembers}
+                                                options={friendsNotInThisGroup}
                                                 getOptionLabel={(option) => option.display_name}
                                                 onChange={(event, newValue, reason) => {
                                                     handleGroupMembersChange(newValue, reason);
@@ -129,8 +100,8 @@ const CreateGroupDialog = (props) => {
                                                     <TextField
                                                         {...params}
                                                         variant='standard'
-                                                        placeholder='Type Name'
-                                                        required={!groupMembers.length > 0}
+                                                        placeholder='Select to add'
+                                                        required={!newGroupMembers.length > 0}
                                                     />
                                                 )}
                                             />
@@ -141,7 +112,9 @@ const CreateGroupDialog = (props) => {
                             </DialogContent>
                             <DialogActions>
                                 <Button onClick={handleClose}>Cancel</Button>
-                                <Button type='submit'>Create Group</Button>
+                                <Button type='submit' disabled={loading}>
+                                    Add
+                                </Button>
                             </DialogActions>
                         </form>
                     </Paper>
@@ -151,4 +124,4 @@ const CreateGroupDialog = (props) => {
     );
 };
 
-export default CreateGroupDialog;
+export default AddGroupMembersDialog;
