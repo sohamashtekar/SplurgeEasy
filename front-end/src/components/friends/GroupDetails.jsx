@@ -26,7 +26,7 @@ const GroupDetails = () => {
                     <Grid
                         container
                         justifyContent={'center'}
-                        style={{ backgroundColor: '#e0e0e0' }}
+                        style={{ backgroundColor: '#E0E0E0' }}
                     >
                         <Grid item style={{ paddingLeft: 5, textAlign: 'center' }}>
                             <Typography variant='h5' style={{ fontWeight: 500 }}>
@@ -44,7 +44,7 @@ const GroupDetails = () => {
                     <Grid
                         container
                         justifyContent={'center'}
-                        style={{ backgroundColor: '#e0e0e0' }}
+                        style={{ backgroundColor: '#E0E0E0' }}
                     >
                         <Grid item style={{ paddingLeft: 5, textAlign: 'center' }}>
                             <Typography variant='h5' style={{ fontWeight: 500 }}>
