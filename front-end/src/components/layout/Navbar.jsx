@@ -21,7 +21,6 @@ function Navbar() {
     const navigate = useNavigate();
     const logout = useLogout();
 
-    console.log(location.pathname);
     const { auth } = useAuth();
 
     const [anchorEl, setAnchorEl] = useState(null);

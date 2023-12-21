@@ -1,8 +1,11 @@
 import { Grid, Typography, IconButton } from '@mui/material';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import useUserData from '../../hooks/useUserData';
+import { axiosPrivate } from '../../api/axios';
+import { userGroupAPI } from '../../api/api';
+import { useState } from 'react';
 
-const GroupMemberRow = ({ memberItem, isAdmin, removeMember }) => {
+const GroupMemberRow = ({ memberItem, isAdmin, removeMember, loading }) => {
     const { id, display_name, email } = memberItem;
     return (
         <Grid item xs={12} sx={{ pt: 1 }}>
@@ -16,6 +19,7 @@ const GroupMemberRow = ({ memberItem, isAdmin, removeMember }) => {
                 <Grid item xs={6} sm={6} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                     {isAdmin && (
                         <IconButton
+                            disabled={loading}
                             color='error'
                             size='small'
                             onClick={() => {
@@ -32,7 +36,7 @@ const GroupMemberRow = ({ memberItem, isAdmin, removeMember }) => {
 };
 
 const GroupMemberList = (props) => {
-    const { groupDetails } = props;
+    const { groupDetails, groupDetailsQuery } = props;
     const membersList = groupDetails?.members || [];
     const createdBy = groupDetails?.created_by;
 
@@ -41,8 +45,23 @@ const GroupMemberList = (props) => {
 
     const isAdmin = createdBy?.id === currentUser?.id;
 
-    const removeMember = (memberID) => {
-        console.log(memberID);
+    const [loading, setLoading] = useState(false);
+
+    const removeMember = async (memberID) => {
+        setLoading(true);
+        try {
+            const requestData = {
+                id: groupDetails.id,
+                member_to_remove: memberID,
+            };
+            await axiosPrivate.patch(userGroupAPI, requestData);
+            groupDetailsQuery.refetch();
+            alert('Member removed!');
+        } catch (err) {
+            alert('Error occurred, contact our support team!');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -54,6 +73,7 @@ const GroupMemberList = (props) => {
                         memberItem={member}
                         isAdmin={isAdmin}
                         removeMember={removeMember}
+                        loading={loading}
                     />
                 ))}
             </Grid>
