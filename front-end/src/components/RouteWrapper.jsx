@@ -64,7 +64,7 @@ function RouteWrapper() {
                 />
 
                 <Route
-                    path='/login'
+                    path='/login/:signUpEmail?'
                     element={
                         <ElementWrapper>
                             <LogIn />

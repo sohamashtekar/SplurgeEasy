@@ -8,19 +8,21 @@ import {
     Checkbox,
 } from '@mui/material';
 import { tokenAPI } from '../../api/api';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
 import axios from '../../api/axios';
 import useAuth from '../../hooks/useAuth';
+import CustomAlert from '../generic/CustomAlert';
 
 function LogIn() {
+    const { signUpEmail } = useParams();
     const navigate = useNavigate();
 
     const { auth, setAuth, persist, setPersist } = useAuth();
     const emailRef = useRef();
     const errRef = useRef();
 
-    const [email, setEmail] = useState('');
+    const [email, setEmail] = useState(signUpEmail || '');
     const [password, setPassword] = useState('');
     const [errMsg, setErrMsg] = useState('');
 
@@ -81,6 +83,13 @@ function LogIn() {
 
     return (
         <>
+            {signUpEmail && (
+                <CustomAlert
+                    open={true}
+                    message={'Sign up complete, you can now log in!'}
+                    severity={'success'}
+                />
+            )}
             <Grid
                 container
                 style={{
@@ -112,6 +121,7 @@ function LogIn() {
                                         variant='outlined'
                                         type='email'
                                         fullWidth
+                                        defaultValue={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                     />
                                 </Grid>
