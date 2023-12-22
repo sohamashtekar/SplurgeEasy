@@ -1,28 +1,23 @@
 import { Grid, Button } from '@mui/material';
-import { useState } from 'react';
-import NewExpenseDialog from '../expense/NewExpenseDialog';
 import useUserData from '../../hooks/useUserData';
 import textClasses from '../generic/styles/TextStyling.module.css';
 import ReceiptIcon from '@mui/icons-material/Receipt';
+import { useNavigate } from 'react-router-dom';
 
 const Summary = () => {
+    const navigate = useNavigate();
     const { userData } = useUserData();
-    const [openExpenseDialog, setOpenExpenseDialog] = useState(false);
 
     const summary = userData?.summary || null;
 
     const TotalAmountColor = summary?.total_balance > 0 ? '#5BC5A7' : '#F44336';
 
     const addExpense = () => {
-        setOpenExpenseDialog(true);
+        navigate('/expense');
     };
 
     return (
         <>
-            {openExpenseDialog && (
-                <NewExpenseDialog open={openExpenseDialog} setOpen={setOpenExpenseDialog} />
-            )}
-
             <Grid container justifyContent={'space-between'} alignItems={'center'}>
                 <Grid item xs={12}>
                     <Grid

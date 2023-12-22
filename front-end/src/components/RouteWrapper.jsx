@@ -11,6 +11,7 @@ import PersistLogin from './authentication/PersistLogin';
 import React from 'react';
 import RequireAuth from './authentication/RequireAuth';
 import SignUp from './authentication/SignUp';
+import AddOrEditExpense from './expense/AddOrEditExpense';
 
 function ElementWrapper({ children }) {
     return (
@@ -99,6 +100,15 @@ function RouteWrapper() {
                         element={
                             <ProtectedElementWrapper>
                                 <GroupDetails />
+                            </ProtectedElementWrapper>
+                        }
+                    />
+
+                    <Route
+                        path='/expense/:expenseID?'
+                        element={
+                            <ProtectedElementWrapper>
+                                <AddOrEditExpense />
                             </ProtectedElementWrapper>
                         }
                     />
