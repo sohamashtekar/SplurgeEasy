@@ -21,7 +21,6 @@ function Navbar() {
     const navigate = useNavigate();
     const logout = useLogout();
 
-    console.log(location.pathname);
     const { auth } = useAuth();
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -72,7 +71,7 @@ function Navbar() {
                         style={{ fontWeight: 600 }}
                         onClick={goToDashboard}
                     >
-                        SplurgeEasy
+                        WeSplit
                     </Typography>
                     {auth?.accessToken && (
                         <div>

@@ -41,8 +41,7 @@ function LandingPage() {
                                         Manage your money with ease.
                                         <br /> Split expenses, track spending, and get tips to save.
                                         <br />
-                                        SplurgeEasy is the ultimate app for smart and social
-                                        finance.
+                                        WeSplit is the ultimate app for smart and social finance.
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={12}>
