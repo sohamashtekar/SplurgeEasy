@@ -4,7 +4,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from expense.serializers import GroupExpenseDetailsSerializer, ExpenseDetailSerializer
+from expense.serializers import GroupExpenseDetailsSerializer, CompleteExpenseDetailsSerializer
 
 from .models import CustomUser, FriendRequest, Friend, ExpenseGroup
 from .serializers import FriendSerializer, UserInfoSerializer, UserGroupSerializer
@@ -185,7 +185,7 @@ class FriendExpensesView(APIView):
     def get(self, request):
         friend_id = request.query_params.get('friend_id')
         friend_balance_details = get_friend_balance_details(request.user.id, friend_id)
-        expense_details_serializer = ExpenseDetailSerializer(friend_balance_details, many=True)
+        expense_details_serializer = CompleteExpenseDetailsSerializer(friend_balance_details, many=True)
         expenses_detailed_data = expense_details_serializer.data
         
         return Response(expenses_detailed_data, status=status.HTTP_200_OK)

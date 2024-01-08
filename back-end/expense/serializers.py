@@ -5,7 +5,7 @@ from rest_framework import serializers
 from expense.models import SplitMethod, SplitDetail, Expense
 
 from user.models import ExpenseGroup
-from user.serializers import UserInfoSerializer 
+from user.serializers import UserInfoSerializer, UserGroupSerializer
 
 
 class SplitMethodSerializer(serializers.ModelSerializer):
@@ -13,7 +13,9 @@ class SplitMethodSerializer(serializers.ModelSerializer):
         model = SplitMethod
         fields = '__all__'
 
-class SplitDetailSerializer(serializers.ModelSerializer):    
+class SplitDetailSerializer(serializers.ModelSerializer):
+    user = UserInfoSerializer()
+     
     class Meta:
         model = SplitDetail
         fields = '__all__'
@@ -41,8 +43,23 @@ class ExpenseSerializer(serializers.ModelSerializer):
                     
 
             return expense
+class CompleteExpenseDetailsSerializer(serializers.ModelSerializer):
+    created_by = UserInfoSerializer()
+    paid_by = UserInfoSerializer()
+    split_details = serializers.SerializerMethodField()
+    group = UserGroupSerializer()
+    
+    class Meta:
+        model = Expense
+        fields = '__all__'
         
-class ExpenseDetailSerializer(serializers.ModelSerializer):
+    def get_split_details(self, obj):
+        split_details_qs = obj.expense_details.all()
+        split_details_serializer = SplitDetailSerializer(split_details_qs, many=True)
+        split_details_data = split_details_serializer.data
+        return split_details_data
+        
+class NonSettledExpenseDetailSerializer(serializers.ModelSerializer):
     created_by = UserInfoSerializer()
     paid_by = UserInfoSerializer()
     split_details = serializers.SerializerMethodField()
@@ -69,7 +86,7 @@ class GroupExpenseDetailsSerializer(serializers.ModelSerializer):
         
     def get_balances(self, obj):
         group_expenses_qs = Expense.objects.filter(group=obj)
-        group_expenses_serializer = ExpenseDetailSerializer(group_expenses_qs, many=True) 
+        group_expenses_serializer = NonSettledExpenseDetailSerializer(group_expenses_qs, many=True) 
         group_expense_details_data = group_expenses_serializer.data
         
         return group_expense_details_data

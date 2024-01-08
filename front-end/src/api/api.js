@@ -1,3 +1,4 @@
+const expenseDetailsAPI = '/expense-details/'
 const friendRequestAPI = '/friend-request/';
 const logoutAPI = '/logout/';
 const saveExpenseAPI = '/save-expense/';
@@ -8,6 +9,7 @@ const userDataAPI = '/user-data/';
 const userGroupAPI = '/user-group/';
 
 export {
+    expenseDetailsAPI,
     friendRequestAPI,
     logoutAPI,
     saveExpenseAPI,
