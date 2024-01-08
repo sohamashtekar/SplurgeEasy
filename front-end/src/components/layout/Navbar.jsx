@@ -71,7 +71,7 @@ function Navbar() {
                         style={{ fontWeight: 600 }}
                         onClick={goToDashboard}
                     >
-                        SplurgeEasy
+                        WeSplit
                     </Typography>
                     {auth?.accessToken && (
                         <div>
