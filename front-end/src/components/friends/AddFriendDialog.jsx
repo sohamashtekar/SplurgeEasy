@@ -49,7 +49,7 @@ const AddFriendDialog = (props) => {
 
             if (!isSEUser && created) {
                 setAlertMessage(
-                    'Your friend is not on SplurgeEasy, we have sent them an email invitation!'
+                    'Your friend is not on WeSplit, we have sent them an email invitation!'
                 );
                 setAlertSeverity('warning');
                 setAlertOpen(true);
