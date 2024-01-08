@@ -77,7 +77,7 @@ SIMPLE_JWT = {
 
 
 CORS_ALLOWED_ORIGINS = [
-    "https://splurge-easy.netlify.app",  # React development server
+    "https://wesplit.netlify.app",  # React development server
 ]
 
 # Enable CSRF (Cross-Site Request Forgery) protection for session-based authentication.
